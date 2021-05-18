@@ -1,0 +1,14 @@
+D:\Schooool\大二下\DatabaseSystem\大作业\DatabaseProject\obj\Debug\DatabaseProject.csprojAssemblyReference.cache
+D:\Schooool\大二下\DatabaseSystem\大作业\DatabaseProject\obj\Debug\DatabaseProject.AdminForm.resources
+D:\Schooool\大二下\DatabaseSystem\大作业\DatabaseProject\obj\Debug\DatabaseProject.MainForm.resources
+D:\Schooool\大二下\DatabaseSystem\大作业\DatabaseProject\obj\Debug\DatabaseProject.Properties.Resources.resources
+D:\Schooool\大二下\DatabaseSystem\大作业\DatabaseProject\obj\Debug\DatabaseProject.csproj.GenerateResource.cache
+D:\Schooool\大二下\DatabaseSystem\大作业\DatabaseProject\obj\Debug\DatabaseProject.csproj.CoreCompileInputs.cache
+D:\Schooool\大二下\DatabaseSystem\大作业\DatabaseProject\bin\Debug\DatabaseProject.exe.config
+D:\Schooool\大二下\DatabaseSystem\大作业\DatabaseProject\bin\Debug\DatabaseProject.exe
+D:\Schooool\大二下\DatabaseSystem\大作业\DatabaseProject\bin\Debug\DatabaseProject.pdb
+D:\Schooool\大二下\DatabaseSystem\大作业\DatabaseProject\obj\Debug\DatabaseProject.exe
+D:\Schooool\大二下\DatabaseSystem\大作业\DatabaseProject\obj\Debug\DatabaseProject.pdb
+D:\Schooool\大二下\DatabaseSystem\大作业\DatabaseProject\obj\Debug\DatabaseProject.JudgeForm.resources
+D:\Schooool\大二下\DatabaseSystem\大作业\DatabaseProject\obj\Debug\DatabaseProject.MainJudgeForm.resources
+D:\Schooool\大二下\DatabaseSystem\大作业\DatabaseProject\obj\Debug\DatabaseProject.TeamForm.resources
