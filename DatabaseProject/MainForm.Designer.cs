@@ -33,13 +33,16 @@ namespace DatabaseProject
             this.label2 = new System.Windows.Forms.Label();
             this.accType = new System.Windows.Forms.DomainUpDown();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.tempButton = new System.Windows.Forms.Button();
+            this.noticeLabel = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.password = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.noticeLabel = new System.Windows.Forms.Label();
+            this.personalRankDisplay = new System.Windows.Forms.TextBox();
+            this.teamRankDisplay = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -78,6 +81,7 @@ namespace DatabaseProject
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.tempButton);
             this.panel1.Controls.Add(this.noticeLabel);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.label5);
@@ -91,6 +95,25 @@ namespace DatabaseProject
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(413, 295);
             this.panel1.TabIndex = 5;
+            // 
+            // tempButton
+            // 
+            this.tempButton.Location = new System.Drawing.Point(203, 221);
+            this.tempButton.Name = "tempButton";
+            this.tempButton.Size = new System.Drawing.Size(125, 53);
+            this.tempButton.TabIndex = 12;
+            this.tempButton.Text = "button2";
+            this.tempButton.UseVisualStyleBackColor = true;
+            this.tempButton.Click += new System.EventHandler(this.tempButton_Click);
+            // 
+            // noticeLabel
+            // 
+            this.noticeLabel.AutoSize = true;
+            this.noticeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.noticeLabel.Location = new System.Drawing.Point(112, 25);
+            this.noticeLabel.Name = "noticeLabel";
+            this.noticeLabel.Size = new System.Drawing.Size(0, 29);
+            this.noticeLabel.TabIndex = 11;
             // 
             // button1
             // 
@@ -149,20 +172,31 @@ namespace DatabaseProject
             this.textBox1.Size = new System.Drawing.Size(215, 38);
             this.textBox1.TabIndex = 5;
             // 
-            // noticeLabel
+            // personalRankDisplay
             // 
-            this.noticeLabel.AutoSize = true;
-            this.noticeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.noticeLabel.Location = new System.Drawing.Point(112, 25);
-            this.noticeLabel.Name = "noticeLabel";
-            this.noticeLabel.Size = new System.Drawing.Size(0, 29);
-            this.noticeLabel.TabIndex = 11;
+            this.personalRankDisplay.Location = new System.Drawing.Point(455, 37);
+            this.personalRankDisplay.Multiline = true;
+            this.personalRankDisplay.Name = "personalRankDisplay";
+            this.personalRankDisplay.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.personalRankDisplay.Size = new System.Drawing.Size(888, 364);
+            this.personalRankDisplay.TabIndex = 6;
+            // 
+            // teamRankDisplay
+            // 
+            this.teamRankDisplay.Location = new System.Drawing.Point(21, 407);
+            this.teamRankDisplay.Multiline = true;
+            this.teamRankDisplay.Name = "teamRankDisplay";
+            this.teamRankDisplay.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.teamRankDisplay.Size = new System.Drawing.Size(888, 364);
+            this.teamRankDisplay.TabIndex = 7;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(486, 417);
+            this.ClientSize = new System.Drawing.Size(1411, 768);
+            this.Controls.Add(this.teamRankDisplay);
+            this.Controls.Add(this.personalRankDisplay);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.label1);
             this.Name = "MainForm";
@@ -187,6 +221,9 @@ namespace DatabaseProject
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label noticeLabel;
+        private System.Windows.Forms.Button tempButton;
+        private System.Windows.Forms.TextBox personalRankDisplay;
+        private System.Windows.Forms.TextBox teamRankDisplay;
     }
 }
 
