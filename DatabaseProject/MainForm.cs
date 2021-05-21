@@ -36,163 +36,144 @@ namespace DatabaseProject
                              "localhost", "5432", "postgres", "JunYu1110@", "sport_competition");
             npgSqlCon = new NpgsqlConnection(connStr);
             npgSqlCon.Open();
-           
+            
+        }
+
+        private string ageGroup(int i)
+        {
+            switch (i)
+            {
+                case 1:
+                    return "7-8";
+                case 2:
+                    return "9-10";
+                case 3:
+                    return "11-12";
+                default:
+                    return "其他";
+            }
         }
         private void tempButton_Click(object sender, EventArgs e)
         {
-
-            //loginInfo
-            /*
-             for (int i = 1; i <= 4; i++)
-            {
-                string insertCmd = String.Format("INSERT INTO loginInfo(accNo,accType,accPassword) VALUES({0},{1},{2})",
-                                            "100000000" + i, 2, "100" + i);
-                NpgsqlCommand cmd = new NpgsqlCommand(insertCmd);
-                cmd.Connection = npgSqlCon;
-                cmd.ExecuteNonQuery();
-            }
-
-            //teams and athletes
-            for (int i = 1; i <= 4; i++)
-            {
-                //every member in the team is an athlete
-                for (int j = 1; j <= 12; j++)
-                {
-                    int age = (j <= 4 ? 7 : (j <= 8 ? 9 : (j <= 12 ? 11 : 14)));
-                    string insertCmd = String.Format("INSERT INTO teams(accNo,memberIdentityNo,teamName) VALUES({0},{1},{2})",
-                                            "'100000000" + i+'\'', '\''+(i + (j > 9 ? "00" : "000") + j)+'\'', "'team" + i+'\'');
-                    string insertCmd1 = String.Format("INSERT INTO athlete(athleteNo,identityNo,teamAccNo,age,name,gender,culturalAchievement) " +
-                                                    " VALUES({0},{1},{2},{3},{4},{5},{6})", (i - 1) * 12 + j, '\'' + (i + (j > 9 ? "00" : "000") + j) + '\'', "'100000000" + i + '\'', age, '\''+(i + "Ath" + j)+'\'', j % 2 == 0, "'x'");
-                    NpgsqlCommand cmd = new NpgsqlCommand(insertCmd);
-                    cmd.Connection = npgSqlCon;
-                    cmd.ExecuteNonQuery();
-                    cmd = new NpgsqlCommand(insertCmd1);
-                    cmd.Connection = npgSqlCon;
-                    cmd.ExecuteNonQuery();
-                }
-
-            }
-            //compeition
-            string[] gameTypes = { "'单杠'","'双杠'","'吊环'","'跳马'","'自由体操'","'鞍马'","'蹦床'", "'高低杠'","'平衡木'" };
-            foreach(string gameType in gameTypes)
-            {
-                //3 age groups
-                for(int i = 1; i < 4; i++)
-                {
-                    //2 genders
-                    string insertCmd = String.Format("INSERT INTO competitions(gameType,gender,ageGroup) VALUES({0},{1},{2})",
-                                            gameType,true,i);
-                    string insertCmd1 = String.Format("INSERT INTO competitions(gameType,gender,ageGroup) VALUES({0},{1},{2})",
-                                            gameType, false, i);
-                    NpgsqlCommand cmd = new NpgsqlCommand(insertCmd);
-                    cmd.Connection = npgSqlCon;
-                    cmd.ExecuteNonQuery();
-                    cmd = new NpgsqlCommand(insertCmd1);
-                    cmd.Connection = npgSqlCon;
-                    cmd.ExecuteNonQuery();
-                }
-            }
-
-            for (int j = 0; j < 1; j++)
-            {
-                string cmd = String.Format("INSERT INTO groupJudge(accNo,identityNo) VALUES({0},{1})",
-                                            "3000000000","30000");
-                NpgsqlCommand cmd2 = new NpgsqlCommand(cmd);
-                cmd2.Connection = npgSqlCon;
-                cmd2.ExecuteNonQuery();
-            }
-            //games
-            string query = "SELECT * FROM competitions";
-            NpgsqlCommand cmd1 = new NpgsqlCommand(query);
-            cmd1.Connection = npgSqlCon;
-            reader = cmd1.ExecuteReader();
-            
-            List<List<object>> lo = new List<List<object>>();
-            while (reader.Read())
-            {
-                object[] vals = new object[4];
-                var en = reader.GetValues(vals);
-                List<object> t = new List<object>(vals);
-                lo.Add(t);
-            }
-            reader.Close();
-            int i = 1;
-            foreach (List<object> l in lo)
-            {
-                string cmd = String.Format("INSERT INTO games(compId,judgeAccNo,stage,time) VALUES({0},{1},{2},{3})",
-                                            l[0].ToString(), "3000000000", true, i++);
-                NpgsqlCommand cmd2 = new NpgsqlCommand(cmd);
-                cmd2.Connection = npgSqlCon;
-                cmd2.ExecuteNonQuery();
-            }
-
-            // *** needs to create participates from athlete and games **
-            string query = "SELECT athleteNo ,  gameId" +
-                            " FROM athlete ,games,competitions" +
-                            " WHERE athlete.gender =competitions.gender" +
-                            " AND games.compId=competitions.compId" +
-                            " AND athlete.age=7" +
-                            " AND competitions.ageGroup=1";
+            // get rank from participates
+            //personal overall rank
+            string query = "WITH personalOverallRank as ("+
+                                " WITH personalRank as (SELECT* FROM participates"+
+                                    " ORDER BY \"tournamentid\" ASC,"+
+                                    " \"Score\" ASC )"+
+                                " SELECT name, athlete.teamAccNo,sum(\"Score\") as total_score" +
+                                " FROM personalRank, games, competitions, athlete" +
+                                " WHERE tournamentId = gameId" +
+                                " AND personalRank.athleteNo = athlete.athleteNo" +
+                                " AND games.compId = competitions.compId" +
+                                " GROUP BY athlete.athleteNo)" +
+                          " SELECT name, teamName, total_score" +
+                          " FROM personalOverallRank, teams" +
+                          " WHERE personalOverallRank.teamAccNo = teams.accNo" +
+                          " GROUP BY name,teamName,total_score" +
+                          " ORDER BY total_score DESC";
             NpgsqlCommand cmd = new NpgsqlCommand(query);
             cmd.Connection = npgSqlCon;
             reader = cmd.ExecuteReader();
-            Random rand = new Random();
-            List<List<object>> lo = new List<List<object>>();
-            while (reader.Read())
+            if (reader.HasRows)
             {
-                textBox1.Text += "a";
+                DataTable dt = new DataTable();
+                dt.Columns.Add("排名", typeof(string));
+                dt.Columns.Add("名字", typeof(string));
+                dt.Columns.Add("队伍", typeof(string));
+                dt.Columns.Add("积分", typeof(int));
                 
-                object[] objs = new object[2];
-                
-                reader.GetValues(objs);
-                List<object> os = new List<object>(objs);
-                lo.Add(os);
-                
+                int rank = 1;
+                DataRow row;
+                while (reader.Read())
+                {
+                    row = dt.NewRow();
+                    object[] objs = new object[3];
+                    reader.GetValues(objs);
+                    row["排名"] = rank++;
+                    
+                    row["名字"] = objs[0].ToString();
+                    row["积分"] = objs[2].ToString();
+                    row["队伍"] = objs[1].ToString();
+                    dt.Rows.Add(row);
+                }
+                personalRank.DataSource = dt;
             }
             reader.Close();
-            foreach(List<object> objs in lo)
-            {
-                int t = rand.Next(9);
-                string command = String.Format("INSERT INTO participates VALUES({0},{1},{2})",
-                                               objs[0].ToString(), objs[1].ToString(), 10 - t);
-                NpgsqlCommand cmd1 = new NpgsqlCommand(command);
-                cmd1.Connection = npgSqlCon;
-                cmd1.ExecuteNonQuery();
-            }
-            */
-
-
-            // *** and get rank from participates
-            
-            string query = "SELECT * FROM participates " +
-                            "ORDER BY \"tournamentid\" ASC, " +
-                            "\"Score\" ASC";
-            NpgsqlCommand cmd = new NpgsqlCommand(query);
+            //team games rank
+            query = " WITH teamCompetitionRank as ("+
+                        " WITH teamTourRank as (SELECT teamAccNo, tournamentId, sum(\"Score\") as teamScore" +
+                            " FROM athlete, participates" +
+                            " WHERE athlete.athleteNo = participates.athleteNo" +
+                            " GROUP BY teamAccNo,tournamentId)" +
+                        " SELECT teamAccNo, teamScore, gameType, gender, ageGroup" +
+                        " FROM teamTourRank, games, competitions" +
+                        " WHERE tournamentId = gameID" +
+                        " AND games.compId = competitions.compId)" +
+                    " SELECT teamName, gameType, gender, ageGroup, teamScore" +
+                    " FROM teamCompetitionRank, teams";
+            cmd = new NpgsqlCommand(query);
             cmd.Connection = npgSqlCon;
             reader = cmd.ExecuteReader();
-            while (reader.Read())
+            if (reader.HasRows)
             {
-                object[] objs = new object[3];
-                reader.GetValues(objs);
-                personalRankDisplay.Text += (objs[0].ToString() + "  " + objs[1].ToString() + "  "
-                                    + objs[2].ToString() + "\r\n");
+                DataTable dt = new DataTable();
+                dt.Columns.Add("队伍", typeof(string));
+                dt.Columns.Add("项目", typeof(string));
+                dt.Columns.Add("性别", typeof(string));
+                dt.Columns.Add("年龄组", typeof(string));
+                dt.Columns.Add("积分", typeof(int));
+                while (reader.Read())
+                {
+                    DataRow row = dt.NewRow();
+                    object[] objs = new object[5];
+                    reader.GetValues(objs);
+
+                    row["队伍"] = objs[0]?.ToString();
+                    row["项目"] = objs[1]?.ToString();
+                    row["性别"] = objs[2]?.ToString();
+                    row["年龄组"] = ageGroup(int.Parse(objs[3]?.ToString()));
+                    row["积分"] = int.Parse(objs[4]?.ToString());
+                    dt.Rows.Add(row);
+                }
+                teamGamesRank.DataSource = dt ;
             }
             reader.Close();
-            
-            string query1 = "SELECT teamAccNo,sum(\"Score\") as totalScore" +
-                            " FROM participates,athlete" +
-                            " WHERE participates.athleteNo=athlete.athleteNo" +
-                            " GROUP BY teamAccNo" +
-                            " ORDER BY totalScore DESC";
+            //team overall rank
+            string query1 = "WITH teamNoRank as (" +
+                                " SELECT teamAccNo, sum(\"Score\") as totalScore" +
+                                " FROM participates, athlete" +
+                                " WHERE participates.athleteNo = athlete.athleteNo" +
+                                " GROUP BY teamAccNo" +
+                                " ORDER BY totalScore DESC)" +
+                            " SELECT teamName, totalScore" +
+                            " FROM teamNoRank, teams" +
+                            " WHERE teamNoRank.teamAccNo = teams.accNo" +
+                            " GROUP BY teamAccNo,teamName,totalScore";
             NpgsqlCommand cmd1 = new NpgsqlCommand(query1);
             cmd1.Connection = npgSqlCon;
             reader = cmd1.ExecuteReader();
-            while (reader.Read())
+            if (reader.HasRows)
             {
-                object[] objs = new object[2];
-                reader.GetValues(objs);
-                teamRankDisplay.Text += (objs[0].ToString() + "  " + objs[1].ToString() +"\r\n");
+                DataTable dt = new DataTable();
+                dt.Columns.Add("排名", typeof(int));
+                dt.Columns.Add("队伍名字", typeof(string));
+                dt.Columns.Add("总积分", typeof(int));
+                int rank = 1;
+                while (reader.Read())
+                {
+                    object[] objs = new object[2];
+                    reader.GetValues(objs);
+                    DataRow row;
+                    row = dt.NewRow();
+                    row["排名"] = rank++;
+                    row["队伍名字"] = objs[0]?.ToString();
+                    row["总积分"] = int.Parse(objs[1]?.ToString()) ;
+                    dt.Rows.Add(row);
+                }
+                teamOverallRank.DataSource = dt;
             }
+
             reader.Close();
         }
         private void button1_Click(object sender, EventArgs e)
