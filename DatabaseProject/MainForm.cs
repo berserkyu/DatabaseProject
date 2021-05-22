@@ -21,7 +21,6 @@ namespace DatabaseProject
         MainJudgeForm mainJudgeForm;
         public void enableComponents()
         {
-            noticeLabel.Text = "enabled";
             button1.Enabled = true;
         }
         
@@ -39,15 +38,15 @@ namespace DatabaseProject
             
         }
 
-        private string ageGroup(int i)
+        private string ageGroup(string i)
         {
             switch (i)
             {
-                case 1:
+                case "1":
                     return "7-8";
-                case 2:
+                case "2":
                     return "9-10";
-                case 3:
+                case "3":
                     return "11-12";
                 default:
                     return "其他";
@@ -78,10 +77,10 @@ namespace DatabaseProject
             if (reader.HasRows)
             {
                 DataTable dt = new DataTable();
-                dt.Columns.Add("排名", typeof(string));
+                dt.Columns.Add("排名", typeof(int));
                 dt.Columns.Add("名字", typeof(string));
                 dt.Columns.Add("队伍", typeof(string));
-                dt.Columns.Add("积分", typeof(int));
+                dt.Columns.Add("积分", typeof(string));
                 
                 int rank = 1;
                 DataRow row;
@@ -91,10 +90,9 @@ namespace DatabaseProject
                     object[] objs = new object[3];
                     reader.GetValues(objs);
                     row["排名"] = rank++;
-                    
-                    row["名字"] = objs[0].ToString();
-                    row["积分"] = objs[2].ToString();
-                    row["队伍"] = objs[1].ToString();
+                    row["名字"] = objs[0]?.ToString();
+                    row["积分"] = objs[2]?.ToString();
+                    row["队伍"] = objs[1]?.ToString();
                     dt.Rows.Add(row);
                 }
                 personalRank.DataSource = dt;
@@ -122,7 +120,7 @@ namespace DatabaseProject
                 dt.Columns.Add("项目", typeof(string));
                 dt.Columns.Add("性别", typeof(string));
                 dt.Columns.Add("年龄组", typeof(string));
-                dt.Columns.Add("积分", typeof(int));
+                dt.Columns.Add("积分", typeof(string));
                 while (reader.Read())
                 {
                     DataRow row = dt.NewRow();
@@ -132,8 +130,8 @@ namespace DatabaseProject
                     row["队伍"] = objs[0]?.ToString();
                     row["项目"] = objs[1]?.ToString();
                     row["性别"] = objs[2]?.ToString();
-                    row["年龄组"] = ageGroup(int.Parse(objs[3]?.ToString()));
-                    row["积分"] = int.Parse(objs[4]?.ToString());
+                    row["年龄组"] = ageGroup(objs[3]?.ToString());
+                    row["积分"] = objs[4]?.ToString();
                     dt.Rows.Add(row);
                 }
                 teamGamesRank.DataSource = dt ;
@@ -158,7 +156,7 @@ namespace DatabaseProject
                 DataTable dt = new DataTable();
                 dt.Columns.Add("排名", typeof(int));
                 dt.Columns.Add("队伍名字", typeof(string));
-                dt.Columns.Add("总积分", typeof(int));
+                dt.Columns.Add("总积分", typeof(string));
                 int rank = 1;
                 while (reader.Read())
                 {
@@ -168,7 +166,7 @@ namespace DatabaseProject
                     row = dt.NewRow();
                     row["排名"] = rank++;
                     row["队伍名字"] = objs[0]?.ToString();
-                    row["总积分"] = int.Parse(objs[1]?.ToString()) ;
+                    row["总积分"] = objs[1]?.ToString();
                     dt.Rows.Add(row);
                 }
                 teamOverallRank.DataSource = dt;
@@ -203,6 +201,70 @@ namespace DatabaseProject
             disableComponents();
         }
 
-        
+        private void getFinalsSchedule_Click(object sender, EventArgs e)
+        {
+            //得出决赛赛程
+            string query = "SELECT gameType,gender,ageGroup,time" +
+                            " FROM games,competitions" +
+                            " WHERE games.compId = competitions.compId" +
+                            " AND games.stage = false";
+            NpgsqlCommand cmd = new NpgsqlCommand(query);
+            cmd.Connection = npgSqlCon;
+            NpgsqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                DataTable dt = new DataTable();
+                dt.Columns.Add("项目", typeof(string));
+                dt.Columns.Add("性别", typeof(string));
+                dt.Columns.Add("年龄组", typeof(string));
+                dt.Columns.Add("场次", typeof(int));
+                while (reader.Read())
+                {
+                    DataRow row = dt.NewRow();
+                    object[] objs = new object[4];
+                    reader.GetValues(objs);
+                    row["项目"] = objs[0]?.ToString();
+                    row["性别"] = (objs[1]?.ToString() == "true" ? "男" : "女");
+                    row["年龄组"] = ageGroup(objs[2]?.ToString());
+                    row["场次"] = objs[3].ToString();
+                    dt.Rows.Add(row);
+                }
+                reader.Close();
+                finalsSchedule.DataSource = dt;
+            }
+            else
+            {
+                noticeLab.Text = "决赛赛程还未宣布";
+                return;
+            }
+
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string query = " INSERT INTO participates(athleteNo, tournamentId,\"Score\")" +
+                            " WITH athletesToAdvance as (" +
+                                " WITH top4team as" +
+                                    " (SELECT teamAccNo" +
+                                    " FROM participates, athlete" +
+                                    " WHERE participates.athleteNo = athlete.athleteNo" +
+                                    " GROUP BY teamAccNo" +
+                                    " LIMIT 4)" +
+                                " SELECT athleteNo" +
+                                " FROM top4team, teams, athlete" +
+                                " WHERE top4team.teamAccNo = teams.accNo" +
+                                " AND teams.memberIdentityNo = athlete.identityNo)" +
+                            " SELECT athletesToAdvance.athleteNo,g2.gameId as finalsGameId,0" +
+                            " FROM athletesToAdvance, participates, games as g1,competitions,games as g2" +
+                            " WHERE athletesToAdvance.athleteNo = participates.athleteNo" +
+                            " AND participates.tournamentId = g1.gameId" +
+                            " AND g1.compId = competitions.compId" +
+                            " AND g1.compId = g2.compId" +
+                            " AND g2.stage = false";
+            NpgsqlCommand cmd = new NpgsqlCommand(query);
+            cmd.Connection = npgSqlCon;
+            cmd.ExecuteNonQuery();
+        }
     }
 }
