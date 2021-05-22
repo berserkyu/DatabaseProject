@@ -32,7 +32,7 @@ namespace DatabaseProject
         {
             InitializeComponent();
             string connStr = String.Format("server={0};Port={1};User Id={2};Password={3};Database={4}",
-                             "localhost", "5432", "postgres", "JunYu1110@", "sport_competition");
+                             "localhost", "5432", "postgres", "passwords", "sport_competition");
             npgSqlCon = new NpgsqlConnection(connStr);
             npgSqlCon.Open();
             
