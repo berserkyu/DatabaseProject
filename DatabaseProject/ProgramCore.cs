@@ -4,9 +4,21 @@ public class ProgramCore
 {
 	public ProgramCore()
 	{
-		public void getPreResults()
+		
+        
+    }
+    public static string ageGroup(string i)
+    {
+        switch (i)
         {
-			string cmd = String.Format("insert into ")
+            case "1":
+                return "7-8";
+            case "2":
+                return "9-10";
+            case "3":
+                return "11-12";
+            default:
+                return "其他";
         }
-	}
+    }
 }

@@ -49,3 +49,4 @@ D:\Schooool\大二下\DatabaseSystem\大作业\ActualProject\DatabaseProject\obj
 D:\Schooool\大二下\DatabaseSystem\大作业\ActualProject\DatabaseProject\obj\Debug\DatabaseProject.csproj.CopyComplete
 D:\Schooool\大二下\DatabaseSystem\大作业\ActualProject\DatabaseProject\obj\Debug\DatabaseProject.exe
 D:\Schooool\大二下\DatabaseSystem\大作业\ActualProject\DatabaseProject\obj\Debug\DatabaseProject.pdb
+D:\Schooool\大二下\DatabaseSystem\大作业\ActualProject\DatabaseProject\obj\Debug\DatabaseProject.finalsInformation.resources

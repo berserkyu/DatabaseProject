@@ -32,26 +32,13 @@ namespace DatabaseProject
         {
             InitializeComponent();
             string connStr = String.Format("server={0};Port={1};User Id={2};Password={3};Database={4}",
-                             "localhost", "5432", "postgres", "passwords", "sport_competition");
+                             "localhost", "5432", "postgres", "JunYu1110@", "sport_competition");
             npgSqlCon = new NpgsqlConnection(connStr);
             npgSqlCon.Open();
             
         }
 
-        private string ageGroup(string i)
-        {
-            switch (i)
-            {
-                case "1":
-                    return "7-8";
-                case "2":
-                    return "9-10";
-                case "3":
-                    return "11-12";
-                default:
-                    return "其他";
-            }
-        }
+        
         private void tempButton_Click(object sender, EventArgs e)
         {
             // get rank from participates
@@ -130,7 +117,7 @@ namespace DatabaseProject
                     row["队伍"] = objs[0]?.ToString();
                     row["项目"] = objs[1]?.ToString();
                     row["性别"] = objs[2]?.ToString();
-                    row["年龄组"] = ageGroup(objs[3]?.ToString());
+                    row["年龄组"] = ProgramCore.ageGroup(objs[3]?.ToString());
                     row["积分"] = objs[4]?.ToString();
                     dt.Rows.Add(row);
                 }
@@ -174,71 +161,79 @@ namespace DatabaseProject
 
             reader.Close();
         }
+        private bool isValidAcc(int i,string accNo,string password)
+        {
+            string query = String.Format(" SELECT accNo,accPassword" +
+                                         " FROM loginInfo" +
+                                         " WHERE accType={0}",i);
+            NpgsqlCommand cmd = new NpgsqlCommand(query);
+            cmd.Connection = npgSqlCon;
+            reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    object[] objs = new object[2];
+                    reader.GetValues(objs);
+                    if (objs[0].ToString() == accNo)
+                    {
+                        if (objs[1].ToString() == password)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("密码错误", "错误",
+MessageBoxButtons.OK);
+                            return false;
+                        }
+                    }
+                }
+            }
+                MessageBox.Show("账号不存在", "错误",
+MessageBoxButtons.OK);
+            return false;
+
+        }
         private void button1_Click(object sender, EventArgs e)
         {
+            Form toShow;
+            int type = -1;
             switch (accType.Text.ToString())
             {
                 case "系统管理员":
-                    adminForm = new AdminForm(this);
-                    adminForm.Show();
+                    toShow = new AdminForm(this);
+                    type = 1;
                     break;
                 case "代表队":
-                    teamForm = new TeamForm(this);
-                    teamForm.Show();
+                    toShow = new TeamForm(this);
+                    type = 2;
                     break;
                 case "小组裁判":
-                    judgeForm = new JudgeForm(this);
-                    judgeForm.Show();
+                    toShow = new JudgeForm(this);
+                    type = 3;
                     break;
                 case "小组总裁判":
-                    mainJudgeForm = new MainJudgeForm(this);
-                    mainJudgeForm.Show();
+                    toShow = new MainJudgeForm(this);
+                    type = 4;
                     break;
                 default:
                     noticeLabel.Text = "请选择账号类型";
                     return;  
             }
-            disableComponents();
+            if (isValidAcc(type, accNoTextBox.Text, accPasswordTextBox.Text))
+            {
+                toShow.Show();
+                disableComponents();
+            }
+            reader.Close();
+            
         }
 
         private void getFinalsSchedule_Click(object sender, EventArgs e)
         {
-            //得出决赛赛程
-            string query = "SELECT gameType,gender,ageGroup,time" +
-                            " FROM games,competitions" +
-                            " WHERE games.compId = competitions.compId" +
-                            " AND games.stage = false";
-            NpgsqlCommand cmd = new NpgsqlCommand(query);
-            cmd.Connection = npgSqlCon;
-            NpgsqlDataReader reader = cmd.ExecuteReader();
-            if (reader.HasRows)
-            {
-                DataTable dt = new DataTable();
-                dt.Columns.Add("项目", typeof(string));
-                dt.Columns.Add("性别", typeof(string));
-                dt.Columns.Add("年龄组", typeof(string));
-                dt.Columns.Add("场次", typeof(int));
-                while (reader.Read())
-                {
-                    DataRow row = dt.NewRow();
-                    object[] objs = new object[4];
-                    reader.GetValues(objs);
-                    row["项目"] = objs[0]?.ToString();
-                    row["性别"] = (objs[1]?.ToString() == "true" ? "男" : "女");
-                    row["年龄组"] = ageGroup(objs[2]?.ToString());
-                    row["场次"] = objs[3].ToString();
-                    dt.Rows.Add(row);
-                }
-                reader.Close();
-                finalsSchedule.DataSource = dt;
-            }
-            else
-            {
-                noticeLab.Text = "决赛赛程还未宣布";
-                return;
-            }
-
-
+            finalsInformation finalForm = new finalsInformation();
+            finalForm.Show();
         }
 
         private void button2_Click(object sender, EventArgs e)

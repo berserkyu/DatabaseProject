@@ -34,10 +34,10 @@ namespace DatabaseProject
             this.accType = new System.Windows.Forms.DomainUpDown();
             this.button1 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.password = new System.Windows.Forms.TextBox();
+            this.accPasswordTextBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.tempButton = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.accNoTextBox = new System.Windows.Forms.TextBox();
             this.personalRank = new System.Windows.Forms.DataGridView();
             this.teamOverallRank = new System.Windows.Forms.DataGridView();
             this.npgsqlCommand1 = new Npgsql.NpgsqlCommand();
@@ -46,18 +46,16 @@ namespace DatabaseProject
             this.teamGamesRank = new System.Windows.Forms.DataGridView();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.noticeLab = new System.Windows.Forms.Label();
             this.noticeLabel = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.getFinalsSchedule = new System.Windows.Forms.Button();
-            this.finalsSchedule = new System.Windows.Forms.DataGridView();
             this.button2 = new System.Windows.Forms.Button();
-            this.noticeLab = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.personalRank)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.teamOverallRank)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.teamGamesRank)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.finalsSchedule)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -116,14 +114,15 @@ namespace DatabaseProject
             this.label4.TabIndex = 8;
             this.label4.Text = "密码";
             // 
-            // password
+            // accPasswordTextBox
             // 
-            this.password.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.password.Location = new System.Drawing.Point(163, 113);
-            this.password.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.password.Name = "password";
-            this.password.Size = new System.Drawing.Size(215, 38);
-            this.password.TabIndex = 7;
+            this.accPasswordTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.accPasswordTextBox.Location = new System.Drawing.Point(163, 113);
+            this.accPasswordTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.accPasswordTextBox.Name = "accPasswordTextBox";
+            this.accPasswordTextBox.PasswordChar = '*';
+            this.accPasswordTextBox.Size = new System.Drawing.Size(215, 38);
+            this.accPasswordTextBox.TabIndex = 7;
             // 
             // label3
             // 
@@ -146,14 +145,14 @@ namespace DatabaseProject
             this.tempButton.UseVisualStyleBackColor = true;
             this.tempButton.Click += new System.EventHandler(this.tempButton_Click);
             // 
-            // textBox1
+            // accNoTextBox
             // 
-            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(163, 70);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(215, 38);
-            this.textBox1.TabIndex = 5;
+            this.accNoTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.accNoTextBox.Location = new System.Drawing.Point(163, 70);
+            this.accNoTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.accNoTextBox.Name = "accNoTextBox";
+            this.accNoTextBox.Size = new System.Drawing.Size(215, 38);
+            this.accNoTextBox.TabIndex = 5;
             // 
             // personalRank
             // 
@@ -242,8 +241,8 @@ namespace DatabaseProject
             this.groupBox1.Controls.Add(this.accType);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.textBox1);
-            this.groupBox1.Controls.Add(this.password);
+            this.groupBox1.Controls.Add(this.accNoTextBox);
+            this.groupBox1.Controls.Add(this.accPasswordTextBox);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(16, 63);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
@@ -253,6 +252,16 @@ namespace DatabaseProject
             this.groupBox1.TabIndex = 17;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "登入";
+            // 
+            // noticeLab
+            // 
+            this.noticeLab.AutoSize = true;
+            this.noticeLab.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.noticeLab.Location = new System.Drawing.Point(27, 284);
+            this.noticeLab.Name = "noticeLab";
+            this.noticeLab.Size = new System.Drawing.Size(75, 36);
+            this.noticeLab.TabIndex = 19;
+            this.noticeLab.Text = "账号";
             // 
             // noticeLabel
             // 
@@ -294,20 +303,6 @@ namespace DatabaseProject
             this.getFinalsSchedule.UseVisualStyleBackColor = true;
             this.getFinalsSchedule.Click += new System.EventHandler(this.getFinalsSchedule_Click);
             // 
-            // finalsSchedule
-            // 
-            this.finalsSchedule.BackgroundColor = System.Drawing.SystemColors.Window;
-            this.finalsSchedule.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.finalsSchedule.Location = new System.Drawing.Point(16, 477);
-            this.finalsSchedule.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.finalsSchedule.Name = "finalsSchedule";
-            this.finalsSchedule.ReadOnly = true;
-            this.finalsSchedule.RowHeadersWidth = 51;
-            this.finalsSchedule.RowTemplate.Height = 24;
-            this.finalsSchedule.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.finalsSchedule.Size = new System.Drawing.Size(416, 244);
-            this.finalsSchedule.TabIndex = 18;
-            // 
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -320,23 +315,12 @@ namespace DatabaseProject
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // noticeLab
-            // 
-            this.noticeLab.AutoSize = true;
-            this.noticeLab.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.noticeLab.Location = new System.Drawing.Point(27, 284);
-            this.noticeLab.Name = "noticeLab";
-            this.noticeLab.Size = new System.Drawing.Size(75, 36);
-            this.noticeLab.TabIndex = 19;
-            this.noticeLab.Text = "账号";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1652, 771);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.finalsSchedule);
             this.Controls.Add(this.getFinalsSchedule);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -351,7 +335,6 @@ namespace DatabaseProject
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.finalsSchedule)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -363,9 +346,9 @@ namespace DatabaseProject
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DomainUpDown accType;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox password;
+        private System.Windows.Forms.TextBox accPasswordTextBox;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox accNoTextBox;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button tempButton;
         private System.Windows.Forms.DataGridView personalRank;
@@ -379,7 +362,6 @@ namespace DatabaseProject
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label noticeLabel;
         private System.Windows.Forms.Button getFinalsSchedule;
-        private System.Windows.Forms.DataGridView finalsSchedule;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label noticeLab;
     }
