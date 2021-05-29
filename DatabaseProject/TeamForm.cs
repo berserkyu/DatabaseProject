@@ -30,7 +30,7 @@ namespace DatabaseProject
             {
                 DataTable dt = new DataTable();
                 dt.Load(dr);
-                dataGridView1.DataSourse = dt;
+                dataGridView1.DataSource = dt;
             }
             comm.Dispose();
             conn.Close();
