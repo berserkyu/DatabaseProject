@@ -32,7 +32,7 @@ namespace DatabaseProject
         {
             InitializeComponent();
             string connStr = String.Format("server={0};Port={1};User Id={2};Password={3};Database={4}",
-                             "localhost", "5432", "TestAcc", "Zhen0102", "Test");
+                             "localhost", "5432", "postgres", "JunYu1110@", "sport_competition");
             npgSqlCon = new NpgsqlConnection(connStr);
             npgSqlCon.Open();
             
@@ -96,7 +96,9 @@ namespace DatabaseProject
                         " WHERE tournamentId = gameID" +
                         " AND games.compId = competitions.compId)" +
                     " SELECT teamName, gameType, gender, ageGroup, teamScore" +
-                    " FROM teamCompetitionRank, teams";
+                    " FROM teamCompetitionRank, teams" +
+                    " ORDER BY (gameType,gender,ageGroup) ASC," +
+                            " teamScore DESC";
             cmd = new NpgsqlCommand(query);
             cmd.Connection = npgSqlCon;
             reader = cmd.ExecuteReader();
@@ -116,7 +118,7 @@ namespace DatabaseProject
 
                     row["队伍"] = objs[0]?.ToString();
                     row["项目"] = objs[1]?.ToString();
-                    row["性别"] = objs[2]?.ToString();
+                    row["性别"] = ((objs[2]?.ToString()=="True")?"男":"女");
                     row["年龄组"] = ProgramCore.ageGroup(objs[3]?.ToString());
                     row["积分"] = objs[4]?.ToString();
                     dt.Rows.Add(row);
