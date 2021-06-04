@@ -27,7 +27,7 @@ namespace DatabaseProject
             teamAccNo = accNo;
             InitializeComponent();
             button1.BringToFront();
-            conn = new NpgsqlConnection("server=localhost;Port=5432;User Id=postgres;Password=JunYu1110@;Database=sport_competition");
+            conn = new NpgsqlConnection("server=localhost;Port=5432;User Id=postgres;Password=kzs3178042333;Database=sport_competition");
             conn.Open();
             NpgsqlCommand comm = new NpgsqlCommand();
             comm.Connection = conn;
