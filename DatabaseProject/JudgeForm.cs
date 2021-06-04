@@ -16,27 +16,32 @@ namespace DatabaseProject
         MainForm mainFormRef;
         NpgsqlConnection npgSqlCon1;
         NpgsqlConnection npgSqlCon2;
-        NpgsqlDataReader readerAthleteInfo;
+        NpgsqlDataReader readerAthleteInfo, reader;
+        private string judgeAccNo, curGameId;
+        private List<string> gamesAssigned;
+        int i = 0;
         int score;
         public JudgeForm()
         {
             InitializeComponent();
         }
-        public JudgeForm(MainForm mainForm)
+        public JudgeForm(MainForm mainForm,string accNo)
         {
+            judgeAccNo = accNo;
+            gamesAssigned = new List<string>();
             this.ControlBox = false;
             mainFormRef = mainForm as MainForm;
             InitializeComponent();
 
             string connStr = String.Format("server={0};Port={1};User Id={2};Password={3};Database={4}",
-                 "localhost", "5432", "postgres", "kzs3178042333", "sport_competition");
+                 "localhost", "5432", "postgres", "JunYu1110@", "sport_competition");
             npgSqlCon1 = new NpgsqlConnection(connStr);
             npgSqlCon1.Open();
             npgSqlCon2 = new NpgsqlConnection(connStr);
             npgSqlCon2.Open();
 
             init();
-            showAthleteInfo();
+           // showAthleteInfo();
         }
 
 
@@ -48,6 +53,39 @@ namespace DatabaseProject
 
         private void button1_Click(object sender, EventArgs e)
         {
+            int n = scoreBoard.Rows.Count;
+            int[] scores = new int[n];
+            NpgsqlCommand cmd = new NpgsqlCommand();
+            cmd.Connection = npgSqlCon1;
+            for (int j = 0; j < n-1; j++)
+            {
+                try { 
+                    string val = scoreBoard.Rows[j].Cells[1].Value.ToString(); 
+                    int score = int.Parse(val); 
+                }
+                catch (Exception e1)
+                {
+                    MessageBox.Show("分数值错误1");
+                    return;
+                }
+                if (score < 0 || score > 100)
+                {
+                    MessageBox.Show("分数值错误2");
+                    return;
+                }
+                string athNo = scoreBoard.Rows[j].Cells[0].Value.ToString();
+                string updateScore = String.Format("UPDATE participates" +
+                                                    " SET \"Score\" = {0}" +
+                                                    " WHERE athleteNo={1}" +
+                                                    "   AND tournamentId={2}",
+                                                    score,athNo,gamesAssigned[i]);
+                cmd = new NpgsqlCommand(updateScore);
+                cmd.Connection = npgSqlCon1;
+                cmd.ExecuteNonQuery();
+            }
+            i++;
+            renewScoreBoard();
+            /*
             string updateScore = string.Format("UPDATE participates" +
                                                " SET score='{0}'" +
                                                " WHERE athleteNo = '{1}' " +
@@ -59,9 +97,10 @@ namespace DatabaseProject
             updateScore_cmd.ExecuteNonQuery();
 
             showAthleteInfo();
+            */
         }
         private void showAthleteInfo()
-        {
+        {/*
 
             if (readerAthleteInfo.IsClosed)
             {
@@ -81,15 +120,83 @@ namespace DatabaseProject
                     score = Int16.Parse(score_textBox.Text);
             }
             else readerAthleteInfo.Close();
+            */
         }
-
+        private void renewScoreBoard()
+        {
+            if (i >= gamesAssigned.Count)
+            {
+                curGameLabel.Text = "已无可评分项目";
+                return;
+            }
+            string curGameId = gamesAssigned[i];
+            string compQuery = String.Format("SELECT gameType,gender,ageGroup" +
+                                " FROM competitions,games" +
+                                " WHERE competitions.compId=games.compId" +
+                                "   AND games.gameId = '{0}'", gamesAssigned[i]);
+            NpgsqlCommand cmd = new NpgsqlCommand(compQuery);
+            cmd.Connection = npgSqlCon1;
+            reader = cmd.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                curGameLabel.Text = "已无可评分项目";
+                reader.Close();
+                return;
+            }
+            reader.Read();
+            curGameLabel.Text = "当前项目:" + reader.GetString(0) + "   性别:" + (reader.GetValue(1)?.ToString() == "True" ? "男" : "女") +
+                                   "   年龄组:" + ProgramCore.ageGroup(reader.GetValue(2)?.ToString()) + " " + gamesAssigned[i] ;
+            reader.Close();
+            
+            
+            DataTable dt = new DataTable();
+            dt.Columns.Add("运动员号", typeof(string));
+            dt.Columns.Add("成绩", typeof(int));
+            curGameId = gamesAssigned[i];
+            string query = "SELECT athleteNo FROM participates WHERE tournamentId='" + curGameId+"'";
+            cmd = new NpgsqlCommand(query);
+            cmd.Connection = npgSqlCon1;
+            reader = cmd.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                curGameLabel.Text = "已无可评分项目";
+                reader.Close();
+                return;
+            }
+            while (reader.Read())
+            {
+                DataRow row = dt.NewRow();
+                row["运动员号"] = reader.GetValue(0).ToString();
+                row["成绩"] = 0;
+                dt.Rows.Add(row);
+            }
+            reader.Close();
+            scoreBoard.DataSource = dt;
+        }
         private void init()
         {
-            string queryAthleteInfo = "SELECT name,athleteNo,tournamentId,score" +
+            string gameIdQuery = String.Format("SELECT gameId FROM games" +
+                            " WHERE judgeAccNo='{0}'",judgeAccNo);
+            NpgsqlCommand cmd = new NpgsqlCommand(gameIdQuery);
+            cmd.Connection = npgSqlCon1;
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                gamesAssigned.Add(reader.GetValue(0)?.ToString());
+            }
+            reader.Close();
+            
+
+            renewScoreBoard();
+
+            /*
+             string queryAthleteInfo = "SELECT name,athleteNo,tournamentId,\"Score\"" +
                                       " FROM athlete NATURAL JOIN participates";
             NpgsqlCommand cmd = new NpgsqlCommand(queryAthleteInfo);
             cmd.Connection = npgSqlCon1;
             readerAthleteInfo = cmd.ExecuteReader();
+             */
+
         }
     }
 }

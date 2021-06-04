@@ -32,9 +32,10 @@ namespace DatabaseProject
         {
             InitializeComponent();
             string connStr = String.Format("server={0};Port={1};User Id={2};Password={3};Database={4}",
-                             "localhost", "5432", "postgres", "kzs3178042333", "sport_competition");
+                             "localhost", "5432", "postgres", "JunYu1110@", "sport_competition");
             npgSqlCon = new NpgsqlConnection(connStr);
             npgSqlCon.Open();
+
             
         }
 
@@ -212,7 +213,7 @@ MessageBoxButtons.OK);
                     type = 2;
                     break;
                 case "小组裁判":
-                    toShow = new JudgeForm(this);
+                    toShow = new JudgeForm(this,accNoTextBox.Text);
                     type = 3;
                     break;
                 case "小组总裁判":
