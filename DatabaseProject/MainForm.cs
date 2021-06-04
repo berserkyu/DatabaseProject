@@ -208,7 +208,7 @@ MessageBoxButtons.OK);
                     type = 1;
                     break;
                 case "代表队":
-                    toShow = new TeamForm(this);
+                    toShow = new TeamForm(this,accNoTextBox.Text);
                     type = 2;
                     break;
                 case "小组裁判":

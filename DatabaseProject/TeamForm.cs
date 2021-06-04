@@ -14,12 +14,20 @@ namespace DatabaseProject
     public partial class TeamForm : Form
     {
         MainForm mainFormRef;
-        NpgsqlConnection npgSqlCon;
+        NpgsqlConnection conn;
         NpgsqlDataReader reader;
+        string teamAccNo;
         public TeamForm()
         {
+            
+
+        }
+        public TeamForm(MainForm mainForm, string accNo)
+        {
+            teamAccNo = accNo;
             InitializeComponent();
-            NpgsqlConnection conn = new NpgsqlConnection ("server=localhost;Port=5432;User Id=TestAcc;Password=Zhen0102;Database=Test");
+            button1.BringToFront();
+            conn = new NpgsqlConnection("server=localhost;Port=5432;User Id=postgres;Password=JunYu1110@;Database=sport_competition");
             conn.Open();
             NpgsqlCommand comm = new NpgsqlCommand();
             comm.Connection = conn;
@@ -33,19 +41,13 @@ namespace DatabaseProject
                 dataGridView2.DataSource = dt;
             }
             comm.Dispose();
-            conn.Close();
-
-        }
-
-        public TeamForm(MainForm mainForm )
-        {
             this.ControlBox = false;
             mainFormRef = mainForm as MainForm;
-            InitializeComponent();
+
         }
         private void button1_Click(object sender, EventArgs e)
         {
-
+            conn.Close();
             mainFormRef.enableComponents();
             this.Close();
         }
@@ -69,6 +71,46 @@ namespace DatabaseProject
         private void label3_Click(object sender, EventArgs e)
         {
 
+        }
+        private bool getNonAthleteGender()
+        {
+            return nonAthleteGenderUpDown.SelectedIndex == 0;
+        }
+        private void addNonAthleteInfo_Click(object sender, EventArgs e)
+        {
+            noticeLabel.Text = "non athlete clicked";
+            noticeLabel1.Text = "non athlete clicked";
+            if (nonAthleteIdNo.Text.Length != 5)
+            {
+                noticeLabel.Text = nonAthleteIdNo.Text.Length.ToString() ;
+                noticeLabel1.Text = nonAthleteIdNo.Text.Length.ToString();
+                return;
+            }
+            else
+            {
+                noticeLabel.Text = "non athlete clicked";
+                noticeLabel1.Text = "non athlete clicked";
+            }
+            string lookUpExistingMember = String.Format(" SELECT * FROM teamNonAthleteMembers" +
+                                                        " WHERE identityNo='{0}'", nonAthleteIdNo.Text.ToString());
+            NpgsqlCommand cmd = new NpgsqlCommand(lookUpExistingMember);
+            cmd.Connection = conn;
+            reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                noticeLabel1.Text = "该人员已存在";
+                noticeLabel.Text = "该人员已存在";
+                return;
+            }
+            reader.Close();
+
+            string insertSql = String.Format(" INSERT INTO teamNonAthleteMembers(name,identityNo,teamAccNo,tel,gender)" +
+                                            " VALUES('{0}','{1}','{2}','{3}',{4})",nonAthleteName.Text,nonAthleteIdNo.Text,teamAccNo,nonAthletePhone.Text,getNonAthleteGender());
+            cmd = new NpgsqlCommand(insertSql);
+            cmd.Connection = conn;
+            cmd.ExecuteNonQuery();
+            noticeLabel.Text = "添加非运动员人员成功";
+            noticeLabel1.Text = "添加非运动员人员成功";
         }
     }
 }
