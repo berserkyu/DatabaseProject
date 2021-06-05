@@ -38,7 +38,10 @@ namespace DatabaseProject
 
             
         }
-
+        public void setNotice(string notice)
+        {
+            globalNoticeLabel.Text = notice;
+        }
         
         private void tempButton_Click(object sender, EventArgs e)
         {

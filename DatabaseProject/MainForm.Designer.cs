@@ -51,6 +51,7 @@ namespace DatabaseProject
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.getFinalsSchedule = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.globalNoticeLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.personalRank)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.teamOverallRank)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.teamGamesRank)).BeginInit();
@@ -245,9 +246,9 @@ namespace DatabaseProject
             this.groupBox1.Controls.Add(this.accPasswordTextBox);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(16, 63);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(416, 351);
             this.groupBox1.TabIndex = 17;
             this.groupBox1.TabStop = false;
@@ -283,9 +284,9 @@ namespace DatabaseProject
             this.groupBox2.Controls.Add(this.personalRank);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(440, 63);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox2.Size = new System.Drawing.Size(1196, 646);
             this.groupBox2.TabIndex = 18;
             this.groupBox2.TabStop = false;
@@ -315,11 +316,21 @@ namespace DatabaseProject
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // globalNoticeLabel
+            // 
+            this.globalNoticeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.globalNoticeLabel.Location = new System.Drawing.Point(12, 485);
+            this.globalNoticeLabel.Name = "globalNoticeLabel";
+            this.globalNoticeLabel.Size = new System.Drawing.Size(366, 189);
+            this.globalNoticeLabel.TabIndex = 20;
+            this.globalNoticeLabel.Text = "账号";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1360, 704);
+            this.Controls.Add(this.globalNoticeLabel);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.getFinalsSchedule);
             this.Controls.Add(this.groupBox2);
@@ -364,6 +375,7 @@ namespace DatabaseProject
         private System.Windows.Forms.Button getFinalsSchedule;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label noticeLab;
+        private System.Windows.Forms.Label globalNoticeLabel;
     }
 }
 

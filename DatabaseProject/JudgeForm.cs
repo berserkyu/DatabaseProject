@@ -53,15 +53,17 @@ namespace DatabaseProject
 
         private void button1_Click(object sender, EventArgs e)
         {
+            int t = i;
+            
             int n = scoreBoard.Rows.Count;
             int[] scores = new int[n];
-            NpgsqlCommand cmd = new NpgsqlCommand();
-            cmd.Connection = npgSqlCon1;
+            NpgsqlCommand cmd;
             for (int j = 0; j < n-1; j++)
             {
+                int score = 0;
                 try { 
                     string val = scoreBoard.Rows[j].Cells[1].Value.ToString(); 
-                    int score = int.Parse(val); 
+                    score = int.Parse(val); 
                 }
                 catch (Exception e1)
                 {
@@ -74,16 +76,15 @@ namespace DatabaseProject
                     return;
                 }
                 string athNo = scoreBoard.Rows[j].Cells[0].Value.ToString();
-                string updateScore = String.Format("UPDATE participates" +
-                                                    " SET \"Score\" = {0}" +
-                                                    " WHERE athleteNo={1}" +
-                                                    "   AND tournamentId={2}",
-                                                    score,athNo,gamesAssigned[i]);
+                string updateScore = String.Format("INSERT INTO scoreGiven(athleteNo,gameId,judgeNo,score)" +
+                                                    " VALUES({0},{1},{2},{3})",
+                                                    athNo,gamesAssigned[i],judgeAccNo, score);
+                System.Diagnostics.Debug.WriteLine(j+" : "+athNo + " " + gamesAssigned[i] + " " + judgeAccNo + " " + score);
                 cmd = new NpgsqlCommand(updateScore);
                 cmd.Connection = npgSqlCon1;
                 cmd.ExecuteNonQuery();
             }
-            i++;
+            System.Diagnostics.Debug.WriteLine("button1 clicked :" + t + " - >"+i++);
             renewScoreBoard();
             /*
             string updateScore = string.Format("UPDATE participates" +
@@ -124,9 +125,11 @@ namespace DatabaseProject
         }
         private void renewScoreBoard()
         {
+            System.Diagnostics.Debug.WriteLine("renew score board");
             if (i >= gamesAssigned.Count)
             {
-                curGameLabel.Text = "已无可评分项目";
+                curGameLabel.Text = "已无可评分项目1" + i + ">=" + gamesAssigned.Count;
+                button1.Enabled = false;
                 return;
             }
             string curGameId = gamesAssigned[i];
@@ -139,13 +142,14 @@ namespace DatabaseProject
             reader = cmd.ExecuteReader();
             if (!reader.HasRows)
             {
-                curGameLabel.Text = "已无可评分项目";
+                curGameLabel.Text = "已无可评分项目2 " + i + ">=" + gamesAssigned.Count;
+                button1.Enabled = false;
                 reader.Close();
                 return;
             }
             reader.Read();
             curGameLabel.Text = "当前项目:" + reader.GetString(0) + "   性别:" + (reader.GetValue(1)?.ToString() == "True" ? "男" : "女") +
-                                   "   年龄组:" + ProgramCore.ageGroup(reader.GetValue(2)?.ToString()) + " " + gamesAssigned[i] ;
+                                   "   年龄组:" + ProgramCore.ageGroup(reader.GetValue(2)?.ToString());
             reader.Close();
             
             
@@ -159,8 +163,9 @@ namespace DatabaseProject
             reader = cmd.ExecuteReader();
             if (!reader.HasRows)
             {
-                curGameLabel.Text = "已无可评分项目";
                 reader.Close();
+                i++;
+                renewScoreBoard();
                 return;
             }
             while (reader.Read())
@@ -175,13 +180,15 @@ namespace DatabaseProject
         }
         private void init()
         {
-            string gameIdQuery = String.Format("SELECT gameId FROM games" +
-                            " WHERE judgeAccNo='{0}'",judgeAccNo);
+            string gameIdQuery = String.Format("SELECT gameId FROM judges" +
+                            " WHERE judgeNo='{0}'",judgeAccNo);
             NpgsqlCommand cmd = new NpgsqlCommand(gameIdQuery);
             cmd.Connection = npgSqlCon1;
+            
             reader = cmd.ExecuteReader();
             while (reader.Read())
             {
+                System.Diagnostics.Debug.WriteLine(reader.GetValue(0)?.ToString());
                 gamesAssigned.Add(reader.GetValue(0)?.ToString());
             }
             reader.Close();
