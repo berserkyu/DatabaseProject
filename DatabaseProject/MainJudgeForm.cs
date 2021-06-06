@@ -219,7 +219,7 @@ namespace DatabaseProject
                 string updateFinalScore = String.Format("UPDATE participates" +
                                                         " SET finalScore={0}" +
                                                         " WHERE athleteNo={1}" +
-                                                        "   AND tournamentId={2}",
+                                                        "   AND tournamentId={2}" ,
                                                         average, athleteNo, gamesToReview[i]);
                 cmd = new NpgsqlCommand(updateFinalScore);
                 cmd.Connection = npgSqlCon;

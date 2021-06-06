@@ -48,7 +48,7 @@ namespace DatabaseProject
                     reader.GetValues(objs);
                     row["项目"] = objs[0]?.ToString();
                     row["性别"] = (objs[1]?.ToString() == "true" ? "男" : "女");
-                    row["年龄组"] = ProgramCore.ageGroup(objs[2]?.ToString());
+                    row["年龄组"] = ProgramCore.ageRange(objs[2]?.ToString());
                     row["场次"] = objs[3].ToString();
                     dt.Rows.Add(row);
                 }
@@ -88,7 +88,7 @@ namespace DatabaseProject
                     row["队伍"] = objs[1]?.ToString();
                     row["项目"] = objs[2]?.ToString();
                     row["性别"] = (objs[3]?.ToString()=="true"?"男":"女");
-                    row["年龄组"] = ProgramCore.ageGroup(objs[4]?.ToString());
+                    row["年龄组"] = ProgramCore.ageRange(objs[4]?.ToString());
                     row["场次"] = objs[5]?.ToString();
                     dt.Rows.Add(row);
                 }

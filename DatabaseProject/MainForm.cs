@@ -15,10 +15,7 @@ namespace DatabaseProject
     {
         NpgsqlConnection npgSqlCon;
         NpgsqlDataReader reader;
-        AdminForm adminForm;
-        TeamForm teamForm;
-        JudgeForm judgeForm;
-        MainJudgeForm mainJudgeForm;
+
         public void enableComponents()
         {
             button1.Enabled = true;
@@ -35,8 +32,6 @@ namespace DatabaseProject
                              "localhost", "5432", "postgres", "JunYu1110@", "sport_competition");
             npgSqlCon = new NpgsqlConnection(connStr);
             npgSqlCon.Open();
-
-            
         }
         public void setNotice(string notice)
         {
@@ -123,7 +118,7 @@ namespace DatabaseProject
                     row["队伍"] = objs[0]?.ToString();
                     row["项目"] = objs[1]?.ToString();
                     row["性别"] = ((objs[2]?.ToString()=="True")?"男":"女");
-                    row["年龄组"] = ProgramCore.ageGroup(objs[3]?.ToString());
+                    row["年龄组"] = ProgramCore.ageRange(objs[3]?.ToString());
                     row["积分"] = objs[4]?.ToString();
                     dt.Rows.Add(row);
                 }
@@ -262,7 +257,8 @@ MessageBoxButtons.OK);
                             " AND participates.tournamentId = g1.gameId" +
                             " AND g1.compId = competitions.compId" +
                             " AND g1.compId = g2.compId" +
-                            " AND g2.stage = false";
+                            " AND g2.stage = false" +
+                            " ON CONFLICT DO NOTHING";
             NpgsqlCommand cmd = new NpgsqlCommand(query);
             cmd.Connection = npgSqlCon;
             cmd.ExecuteNonQuery();

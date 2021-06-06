@@ -39,6 +39,9 @@ namespace DatabaseProject
             npgsqlcon.Open();
             this.ControlBox = false;
             InitializeComponent();
+            refreshSchedule_Click(this,EventArgs.Empty);
+            button2_Click(this, EventArgs.Empty);
+            refreshJudgingInfo();
         }
         private bool getCurGender()
         {
@@ -46,7 +49,7 @@ namespace DatabaseProject
         }
         private int getCurAgeGroup()
         {
-            label10.Text = (ageGroupUpDown.SelectedIndex + 1).ToString();
+            noticeLabelSchedule.Text = (ageGroupUpDown.SelectedIndex + 1).ToString();
             return ageGroupUpDown.SelectedIndex + 1;
         }
         private string accTypes(string accTypeNo)
@@ -75,12 +78,13 @@ namespace DatabaseProject
         {
             mainFormRef.enableComponents();
         }
-
+        //refresh acc info
         private void button2_Click(object sender, EventArgs e)
         {
             showsPassword = checkBoxShowPW.Checked;
             string query =  " SELECT accNo,accType,accPassword" +
-                            " FROM loginInfo";
+                            " FROM loginInfo" +
+                            " ORDER BY accType";
             NpgsqlCommand cmd = new NpgsqlCommand(query);
             cmd.Connection = npgsqlcon;
             reader = cmd.ExecuteReader();
@@ -114,13 +118,9 @@ namespace DatabaseProject
 
         private void addAcc_Click(object sender, EventArgs e)
         {
-            if (curAcc.ContainsKey(accNo.Text))
-            {
-                noticeLabel.Text = "账号已存在";
-                return;
-            }
             string command = String.Format("INSERT INTO loginInfo(accNo,accType,accPassword)" +
-                                            " VALUES({0},{1},{2})", accNo.Text, accType.SelectedIndex + 2,passWord.Text);
+                                            " VALUES({0},{1},{2})" +
+                                            " ON CONFLICT DO NOTHING", accNo.Text, accType.SelectedIndex + 2,passWord.Text);
             NpgsqlCommand cmd = new NpgsqlCommand(command);
             cmd.Connection = npgsqlcon;
             cmd.ExecuteNonQuery();
@@ -130,11 +130,6 @@ namespace DatabaseProject
 
         private void delAcc_Click(object sender, EventArgs e)
         {
-            if (!curAcc.ContainsKey(accNo.Text))
-            {
-                noticeLabel.Text = "账号不存在";
-                return;
-            }
             string command = String.Format("DELETE FROM loginInfo " +
                                             " WHERE accNo ='{0}'" +
                                             " AND accType <> 1",accNo.Text);
@@ -148,7 +143,7 @@ namespace DatabaseProject
 
         private void refreshSchedule_Click(object sender, EventArgs e)
         {
-            string query =  "SELECT gameType,gender,ageGroup,time" +
+            string query =  "SELECT gameType,gender,ageGroup,time,gameId" +
                             " FROM games,competitions" +
                             " WHERE games.compId = competitions.compId" +
                             "   AND stage=true" +
@@ -159,6 +154,7 @@ namespace DatabaseProject
             if (reader.HasRows)
             {
                 DataTable dt = new DataTable();
+                dt.Columns.Add("场次编号", typeof(string));
                 dt.Columns.Add("场次", typeof(string));
                 dt.Columns.Add("项目", typeof(string));
                 dt.Columns.Add("性别", typeof(string));
@@ -167,18 +163,19 @@ namespace DatabaseProject
                 while (reader.Read())
                 {
                     DataRow row = dt.NewRow();
-                    object[] objs = new object[4];
+                    object[] objs = new object[5];
                     reader.GetValues(objs);
+                    row["场次编号"] = objs[4]?.ToString();
                     row["项目"] = objs[0]?.ToString();
                     row["性别"] = (objs[1]?.ToString() == "True" ? "男" : "女");
-                    row["年龄组"] = ProgramCore.ageGroup(objs[2]?.ToString());
+                    row["年龄组"] = ProgramCore.ageRange(objs[2]?.ToString());
                     row["场次"] = objs[3].ToString();
                     occupied[int.Parse(objs[3].ToString())] = 1;
                     dt.Rows.Add(row);
                 }
-                reader.Close();
                 scheduleGridView.DataSource = dt;
             }
+            reader.Close();
         }
         private bool checkAddInfo()
         {
@@ -205,6 +202,11 @@ namespace DatabaseProject
             NpgsqlCommand cmd = new NpgsqlCommand(getCompId);
             cmd.Connection = npgsqlcon;
             reader = cmd.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                noticeLabelSchedule.Text = "此比赛不合法";
+                reader.Close();
+            }
             reader.Read();
             string compId = reader.GetValue(0)?.ToString();
             reader.Close();
@@ -216,10 +218,12 @@ namespace DatabaseProject
             //if the game has already in games
             if (reader.HasRows)
             {
+                string gameId = reader.GetValue(0).ToString();
                 reader.Close();
                 string update = String.Format(  "UPDATE games" +
-                                                " SET time={0},judgeAccNo='{1}'" +
-                                                " WHERE compId='{2}'",arrange,judgeAccNo.Text,compId);
+                                                " SET time={0}" +
+                                                " WHERE compId='{1}'" 
+                                                , arrange,compId);
                 cmd = new NpgsqlCommand(update);
                 cmd.Connection = npgsqlcon;
                 cmd.ExecuteNonQuery();
@@ -229,17 +233,16 @@ namespace DatabaseProject
             else
             {
                 reader.Close();
-                string insert = String.Format(" INSERT INTO games(compId,stage,time,judgeAccNo)" +
-                                                " VALUES('{0}',{1},{2},'{3}')",
-                                                compId,true,arrange,judgeAccNo.Text);
+                string insert = String.Format(" INSERT INTO games(compId,stage,time)" +
+                                                " VALUES('{0}',{1},{2})" +
+                                                " ON CONFLICT DO NOTHING",
+                                                compId,true,arrange);
                 cmd = new NpgsqlCommand(insert);
                 cmd.Connection = npgsqlcon;
                 cmd.ExecuteNonQuery();
                 noticeLabel1.Text = "已添加比赛场次";
-                
             }
             refreshSchedule_Click(this, EventArgs.Empty);
-            reader.Close();
             
         }
 
@@ -272,6 +275,79 @@ namespace DatabaseProject
             cmd.ExecuteNonQuery();
             noticeLabel1.Text = "场次已删除 : (" +objs[0].ToString()+" , "+objs[1].ToString()+" , "
                                 + objs[2].ToString()+")";
+        }
+
+        private void addJudgeToGame_Click(object sender, EventArgs e)
+        {
+            string lookUpJudge = String.Format("SELECT * FROM loginInfo" +
+                                                " WHERE accNo='{0}'" +
+                                                "   AND accType=3",judgeAccNo.Text);
+            NpgsqlCommand cmd = new NpgsqlCommand(lookUpJudge);
+            cmd.Connection = npgsqlcon;
+            NpgsqlDataReader r = cmd.ExecuteReader();
+            if (!r.HasRows)
+            {
+                r.Close();
+                noticeLabelAddJudge.Text = "裁判不存在";
+                return;
+            }
+            r.Close();
+            lookUpJudge = String.Format("SELECT * FROM games" +
+                                        " WHERE gameId={0}", gameToJudge.Text);
+            cmd = new NpgsqlCommand(lookUpJudge);
+            cmd.Connection = npgsqlcon;
+            r = cmd.ExecuteReader();
+            if (!r.HasRows)
+            {
+                r.Close();
+                noticeLabelAddJudge.Text = "场次不存在";
+                return;
+            }
+            r.Close();
+            string lookUpJuding = String.Format("SELECT * FROM judges" +
+                                                " WHERE judgeNo='{0}'" +
+                                                "   AND gameId={1}",
+                                                judgeAccNo.Text, gameToJudge.Text);
+            cmd = new NpgsqlCommand(lookUpJuding);
+            cmd.Connection = npgsqlcon;
+            r = cmd.ExecuteReader();
+            if (r.HasRows)
+            {
+                r.Close();
+                return;
+            }
+            r.Close();
+            string addJudging = String.Format("INSERT INTO judges(judgeNo,gameId)" +
+                                                " VALUES('{0}',{1})" +
+                                                " ON CONFLICT DO NOTHING",
+                                                judgeAccNo.Text, gameToJudge.Text);
+            cmd = new NpgsqlCommand(addJudging);
+            cmd.Connection = npgsqlcon;
+            cmd.ExecuteNonQuery();
+            noticeLabelAddJudge.Text = "添加成功";
+            refreshJudgingInfo();
+        }
+
+        private void refreshJudgingInfo()
+        {
+            string query = "SELECT judgeNo,gameId FROM judges ORDER BY judgeNo";
+            NpgsqlCommand cmd = new NpgsqlCommand(query);
+            cmd.Connection = npgsqlcon;
+            NpgsqlDataReader r = cmd.ExecuteReader();
+            if (r.HasRows) {
+                DataTable dt = new DataTable();
+                dt.Columns.Add("裁判账号", typeof(string));
+                dt.Columns.Add("场次编号", typeof(string));
+                while (r.Read())
+                {
+                    DataRow row = dt.NewRow();
+                    row["裁判账号"] = r.GetValue(0).ToString();
+                    row["场次编号"] = r.GetValue(1).ToString();
+                    dt.Rows.Add(row);
+                }
+                judgesInfoGrid.DataSource = dt;
+            }
+            r.Close();
         }
     }
 }

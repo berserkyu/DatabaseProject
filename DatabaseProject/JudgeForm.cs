@@ -77,7 +77,8 @@ namespace DatabaseProject
                 }
                 string athNo = scoreBoard.Rows[j].Cells[0].Value.ToString();
                 string updateScore = String.Format("INSERT INTO scoreGiven(athleteNo,gameId,judgeNo,score)" +
-                                                    " VALUES({0},{1},{2},{3})",
+                                                    " VALUES({0},{1},{2},{3})" +
+                                                    " ON CONFLICT DO NOTHING",
                                                     athNo,gamesAssigned[i],judgeAccNo, score);
                 System.Diagnostics.Debug.WriteLine(j+" : "+athNo + " " + gamesAssigned[i] + " " + judgeAccNo + " " + score);
                 cmd = new NpgsqlCommand(updateScore);
@@ -149,7 +150,7 @@ namespace DatabaseProject
             }
             reader.Read();
             curGameLabel.Text = "当前项目:" + reader.GetString(0) + "   性别:" + (reader.GetValue(1)?.ToString() == "True" ? "男" : "女") +
-                                   "   年龄组:" + ProgramCore.ageGroup(reader.GetValue(2)?.ToString());
+                                   "   年龄组:" + ProgramCore.ageRange(reader.GetValue(2)?.ToString());
             reader.Close();
             
             
@@ -181,7 +182,7 @@ namespace DatabaseProject
         private void init()
         {
             string gameIdQuery = String.Format("SELECT gameId FROM judges" +
-                            " WHERE judgeNo='{0}'",judgeAccNo);
+                                               " WHERE judgeNo='{0}'",judgeAccNo);
             NpgsqlCommand cmd = new NpgsqlCommand(gameIdQuery);
             cmd.Connection = npgSqlCon1;
             

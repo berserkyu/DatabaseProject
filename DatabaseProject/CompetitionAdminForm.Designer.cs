@@ -48,10 +48,8 @@ namespace DatabaseProject
             this.label2 = new System.Windows.Forms.Label();
             this.npgsqlCommand1 = new Npgsql.NpgsqlCommand();
             this.delFromSchedule = new System.Windows.Forms.GroupBox();
-            this.label10 = new System.Windows.Forms.Label();
+            this.noticeLabelSchedule = new System.Windows.Forms.Label();
             this.delSchedule = new System.Windows.Forms.Button();
-            this.judgeAccNo = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
             this.noticeLabel1 = new System.Windows.Forms.Label();
             this.refreshSchedule = new System.Windows.Forms.Button();
             this.scheduleGridView = new System.Windows.Forms.DataGridView();
@@ -65,11 +63,21 @@ namespace DatabaseProject
             this.genderUpDown = new System.Windows.Forms.DomainUpDown();
             this.gameTypeUpDown = new System.Windows.Forms.DomainUpDown();
             this.npgsqlCommand2 = new Npgsql.NpgsqlCommand();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.judgesInfoGrid = new System.Windows.Forms.DataGridView();
+            this.addJudgeToGame = new System.Windows.Forms.Button();
+            this.judgeAccNo = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.gameToJudge = new System.Windows.Forms.TextBox();
+            this.noticeLabelAddJudge = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.accInfoGridView)).BeginInit();
             this.delFromSchedule.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scheduleGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.arrangementUpDown)).BeginInit();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.judgesInfoGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -254,10 +262,8 @@ namespace DatabaseProject
             // 
             // delFromSchedule
             // 
-            this.delFromSchedule.Controls.Add(this.label10);
+            this.delFromSchedule.Controls.Add(this.noticeLabelSchedule);
             this.delFromSchedule.Controls.Add(this.delSchedule);
-            this.delFromSchedule.Controls.Add(this.judgeAccNo);
-            this.delFromSchedule.Controls.Add(this.label9);
             this.delFromSchedule.Controls.Add(this.noticeLabel1);
             this.delFromSchedule.Controls.Add(this.refreshSchedule);
             this.delFromSchedule.Controls.Add(this.scheduleGridView);
@@ -278,15 +284,15 @@ namespace DatabaseProject
             this.delFromSchedule.TabStop = false;
             this.delFromSchedule.Text = "赛程安排";
             // 
-            // label10
+            // noticeLabelSchedule
             // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(291, 205);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(78, 29);
-            this.label10.TabIndex = 21;
-            this.label10.Text = "notice";
+            this.noticeLabelSchedule.AutoSize = true;
+            this.noticeLabelSchedule.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.noticeLabelSchedule.Location = new System.Drawing.Point(291, 205);
+            this.noticeLabelSchedule.Name = "noticeLabelSchedule";
+            this.noticeLabelSchedule.Size = new System.Drawing.Size(78, 29);
+            this.noticeLabelSchedule.TabIndex = 21;
+            this.noticeLabelSchedule.Text = "notice";
             // 
             // delSchedule
             // 
@@ -298,24 +304,6 @@ namespace DatabaseProject
             this.delSchedule.Text = "移除该场次比赛";
             this.delSchedule.UseVisualStyleBackColor = true;
             this.delSchedule.Click += new System.EventHandler(this.delSchedule_Click);
-            // 
-            // judgeAccNo
-            // 
-            this.judgeAccNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.judgeAccNo.Location = new System.Drawing.Point(20, 341);
-            this.judgeAccNo.Name = "judgeAccNo";
-            this.judgeAccNo.Size = new System.Drawing.Size(244, 34);
-            this.judgeAccNo.TabIndex = 14;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(15, 309);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(221, 29);
-            this.label9.TabIndex = 19;
-            this.label9.Text = "裁判员(输入其账号)";
             // 
             // noticeLabel1
             // 
@@ -472,11 +460,93 @@ namespace DatabaseProject
             this.npgsqlCommand2.Transaction = null;
             this.npgsqlCommand2.UnknownResultTypeList = null;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.noticeLabelAddJudge);
+            this.groupBox2.Controls.Add(this.label10);
+            this.groupBox2.Controls.Add(this.gameToJudge);
+            this.groupBox2.Controls.Add(this.label9);
+            this.groupBox2.Controls.Add(this.judgeAccNo);
+            this.groupBox2.Controls.Add(this.addJudgeToGame);
+            this.groupBox2.Controls.Add(this.judgesInfoGrid);
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox2.Location = new System.Drawing.Point(1084, 406);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(566, 431);
+            this.groupBox2.TabIndex = 6;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "安排裁判";
+            // 
+            // judgesInfoGrid
+            // 
+            this.judgesInfoGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.judgesInfoGrid.Location = new System.Drawing.Point(301, 36);
+            this.judgesInfoGrid.Name = "judgesInfoGrid";
+            this.judgesInfoGrid.RowHeadersWidth = 51;
+            this.judgesInfoGrid.RowTemplate.Height = 24;
+            this.judgesInfoGrid.Size = new System.Drawing.Size(240, 365);
+            this.judgesInfoGrid.TabIndex = 0;
+            // 
+            // addJudgeToGame
+            // 
+            this.addJudgeToGame.Location = new System.Drawing.Point(20, 309);
+            this.addJudgeToGame.Name = "addJudgeToGame";
+            this.addJudgeToGame.Size = new System.Drawing.Size(147, 72);
+            this.addJudgeToGame.TabIndex = 1;
+            this.addJudgeToGame.Text = "添加";
+            this.addJudgeToGame.UseVisualStyleBackColor = true;
+            this.addJudgeToGame.Click += new System.EventHandler(this.addJudgeToGame_Click);
+            // 
+            // judgeAccNo
+            // 
+            this.judgeAccNo.Location = new System.Drawing.Point(7, 94);
+            this.judgeAccNo.Name = "judgeAccNo";
+            this.judgeAccNo.Size = new System.Drawing.Size(275, 30);
+            this.judgeAccNo.TabIndex = 2;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(6, 62);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(109, 29);
+            this.label9.TabIndex = 22;
+            this.label9.Text = "裁判账号";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(6, 127);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(109, 29);
+            this.label10.TabIndex = 24;
+            this.label10.Text = "裁决场次";
+            // 
+            // gameToJudge
+            // 
+            this.gameToJudge.Location = new System.Drawing.Point(7, 159);
+            this.gameToJudge.Name = "gameToJudge";
+            this.gameToJudge.Size = new System.Drawing.Size(275, 30);
+            this.gameToJudge.TabIndex = 23;
+            // 
+            // noticeLabelAddJudge
+            // 
+            this.noticeLabelAddJudge.AutoSize = true;
+            this.noticeLabelAddJudge.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.noticeLabelAddJudge.Location = new System.Drawing.Point(6, 219);
+            this.noticeLabelAddJudge.Name = "noticeLabelAddJudge";
+            this.noticeLabelAddJudge.Size = new System.Drawing.Size(78, 29);
+            this.noticeLabelAddJudge.TabIndex = 22;
+            this.noticeLabelAddJudge.Text = "notice";
+            // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1111, 865);
+            this.ClientSize = new System.Drawing.Size(1692, 865);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.delFromSchedule);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button1);
@@ -492,6 +562,9 @@ namespace DatabaseProject
             this.delFromSchedule.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scheduleGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.arrangementUpDown)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.judgesInfoGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -530,9 +603,15 @@ namespace DatabaseProject
         private System.Windows.Forms.DataGridView scheduleGridView;
         private System.Windows.Forms.Button addToSchedule;
         private System.Windows.Forms.Label noticeLabel1;
-        private System.Windows.Forms.TextBox judgeAccNo;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button delSchedule;
+        private System.Windows.Forms.Label noticeLabelSchedule;
+        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox gameToJudge;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox judgeAccNo;
+        private System.Windows.Forms.Button addJudgeToGame;
+        private System.Windows.Forms.DataGridView judgesInfoGrid;
+        private System.Windows.Forms.Label noticeLabelAddJudge;
     }
 }
