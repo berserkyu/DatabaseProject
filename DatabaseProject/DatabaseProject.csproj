@@ -81,11 +81,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdminForm.cs">
+    <Compile Include="CompetitionAdminForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AdminForm.Designer.cs">
-      <DependentUpon>AdminForm.cs</DependentUpon>
+    <Compile Include="CompetitionAdminForm.designer.cs">
+      <DependentUpon>CompetitionAdminForm.cs</DependentUpon>
     </Compile>
     <Compile Include="finalsInformation.cs">
       <SubType>Form</SubType>
@@ -120,8 +120,8 @@
     <Compile Include="TeamForm.Designer.cs">
       <DependentUpon>TeamForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="AdminForm.resx">
-      <DependentUpon>AdminForm.cs</DependentUpon>
+    <EmbeddedResource Include="CompetitionAdminForm.resx">
+      <DependentUpon>CompetitionAdminForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="finalsInformation.resx">
       <DependentUpon>finalsInformation.cs</DependentUpon>

@@ -35,9 +35,13 @@ namespace DatabaseProject
                              "localhost", "5432", "postgres", "JunYu1110@", "sport_competition");
             npgSqlCon = new NpgsqlConnection(connStr);
             npgSqlCon.Open();
+
             
         }
-
+        public void setNotice(string notice)
+        {
+            globalNoticeLabel.Text = notice;
+        }
         
         private void tempButton_Click(object sender, EventArgs e)
         {
@@ -208,11 +212,11 @@ MessageBoxButtons.OK);
                     type = 1;
                     break;
                 case "代表队":
-                    toShow = new TeamForm(this);
+                    toShow = new TeamForm(this,accNoTextBox.Text);
                     type = 2;
                     break;
                 case "小组裁判":
-                    toShow = new JudgeForm(this);
+                    toShow = new JudgeForm(this,accNoTextBox.Text);
                     type = 3;
                     break;
                 case "小组总裁判":
