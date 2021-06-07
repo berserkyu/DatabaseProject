@@ -51,7 +51,7 @@ namespace DatabaseProject
             mainFormRef.enableComponents();
             this.Close();
         }
-
+        //save button
         private void button1_Click(object sender, EventArgs e)
         {
             int t = i;
@@ -193,7 +193,7 @@ namespace DatabaseProject
         private void init()
         {
             gamesAssigned = new List<string>();
-            string gameIdQuery = String.Format("SELECT gameId FROM judges,games" +
+            string gameIdQuery = String.Format("SELECT judges.gameId FROM judges,games" +
                                                " WHERE judgeNo='{0}'" +
                                                " AND judges.gameId=games.gameId" +
                                                " AND games.stage={1}",judgeAccNo,curGame);

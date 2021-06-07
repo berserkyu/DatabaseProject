@@ -150,6 +150,7 @@ namespace DatabaseProject
             if (r.HasRows)
             {
                 noticeLabelAthlete.Text = "身份证号已存在";
+                r.Close();
                 return;
             }
             r.Close();

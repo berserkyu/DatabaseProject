@@ -43,9 +43,9 @@ namespace DatabaseProject
             this.label4 = new System.Windows.Forms.Label();
             this.judgeAccNo_textBox = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.isFinal = new System.Windows.Forms.CheckBox();
             this.button2 = new System.Windows.Forms.Button();
             this.gameLabel = new System.Windows.Forms.Label();
-            this.isFinal = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.scoreBoard)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.finalScoreBoard)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -194,6 +194,16 @@ namespace DatabaseProject
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "分数裁决";
             // 
+            // isFinal
+            // 
+            this.isFinal.AutoSize = true;
+            this.isFinal.Location = new System.Drawing.Point(223, 325);
+            this.isFinal.Name = "isFinal";
+            this.isFinal.Size = new System.Drawing.Size(74, 29);
+            this.isFinal.TabIndex = 25;
+            this.isFinal.Text = "决赛";
+            this.isFinal.UseVisualStyleBackColor = true;
+            // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(223, 282);
@@ -212,16 +222,6 @@ namespace DatabaseProject
             this.gameLabel.Size = new System.Drawing.Size(17, 25);
             this.gameLabel.TabIndex = 23;
             this.gameLabel.Text = ".";
-            // 
-            // isFinal
-            // 
-            this.isFinal.AutoSize = true;
-            this.isFinal.Location = new System.Drawing.Point(223, 325);
-            this.isFinal.Name = "isFinal";
-            this.isFinal.Size = new System.Drawing.Size(74, 29);
-            this.isFinal.TabIndex = 25;
-            this.isFinal.Text = "决赛";
-            this.isFinal.UseVisualStyleBackColor = true;
             // 
             // MainJudgeForm
             // 

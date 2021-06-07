@@ -32,6 +32,7 @@ namespace DatabaseProject
         public MainJudgeForm(MainForm mainForm)
         {
             this.ControlBox = false;
+            curGame = true;
             mainFormRef = mainForm as MainForm;
             InitializeComponent();
 
@@ -68,6 +69,7 @@ namespace DatabaseProject
             readerAthleteInfo = cmd.ExecuteReader();
             */
             i = 0;
+            curGame = !isFinal.Checked;
             gamesToReview = new List<string>();
             string gamesToReviewQuery = "SELECT gameId FROM games WHERE stage="+!curGame;
             NpgsqlCommand cmd = new NpgsqlCommand(gamesToReviewQuery);
@@ -154,9 +156,10 @@ namespace DatabaseProject
         private void button2_Click(object sender, EventArgs e)
         {
             //refresh
-            if(curGame != isFinal.Checked)
+            if(curGame == isFinal.Checked)
             {
-                
+                pass_Button.Enabled = true;
+                not_pass_button.Enabled = true;
                 curGame = isFinal.Checked;
                 init();
             }
@@ -273,7 +276,7 @@ namespace DatabaseProject
                 curGame = false;
                 button1.Enabled = false;
                 gameLabel.Text = "已完成所有评估";
-                mainFormRef.generateFinals();
+                if(curGame) mainFormRef.generateFinals();
                 return;
             }
             string curGameId = gamesToReview[i];
@@ -302,7 +305,7 @@ namespace DatabaseProject
             int n = athNo.Count - 1;
             for(int j = 0; j < n; j++)
             {
-               
+               System.Diagnostics.Debug.WriteLine(curGameId+" "+athNo[j]);
                 string queryScoreBoard = String.Format("SELECT judgeNo,score" +
                                                         " FROM scoreGiven" +
                                                         " WHERE gameId={0}" +

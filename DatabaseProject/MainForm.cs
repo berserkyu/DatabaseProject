@@ -35,7 +35,7 @@ namespace DatabaseProject
             npgSqlCon.Open();
             NpgsqlConnection npgSqlCon1 = new NpgsqlConnection(connStr);
             npgSqlCon1.Open();
-           
+         
 
         }
         public void setNotice(string notice)
@@ -50,13 +50,12 @@ namespace DatabaseProject
             string query = " WITH t AS(SELECT athleteNo, avg(finalScore) as score" +
                                     " FROM participates,games" +
                                     " WHERE tournamentId=gameId" +
-                                    "   AND stage="+!showsFinals.Checked +
+                                    "   AND stage=" + !showsFinals.Checked +
                                     " GROUP BY athleteNo)" +
                             " SELECT athlete.name,teamName,t.score" +
                             "  FROM t,athlete,teams,games" +
                             " WHERE t.athleteNo = athlete.athleteNo" +
-                            " AND athlete.identityNo = teams.memberIdentityNo" +
-                            " ";
+                            " AND athlete.identityNo = teams.memberIdentityNo";
             NpgsqlCommand cmd = new NpgsqlCommand(query);
             cmd.Connection = npgSqlCon;
             reader = cmd.ExecuteReader();
@@ -243,7 +242,8 @@ MessageBoxButtons.OK);
             //generate games schedule entirely same as pre game
             string insertGames = "INSERT INTO games(compId,stage,time)" +
                                 " SELECT compId,false,time" +
-                                " FROM games";
+                                " FROM games" +
+                                " ON CONFLICT DO NOTHING";
             NpgsqlCommand cmd = new NpgsqlCommand(insertGames);
             cmd.Connection = npgSqlCon;
             cmd.ExecuteNonQuery();
@@ -268,7 +268,8 @@ MessageBoxButtons.OK);
                                         " AND games.compId = finals.compId"+
                                         " AND competitions.compId = games.compId"+
                                         " AND participates.tournamentId = games.gameId"+
-                                        " AND athletesAdvanced.athleteNo = participates.athleteNo";
+                                        " AND athletesAdvanced.athleteNo = participates.athleteNo" +
+                                        " ON CONFLICT DO NOTHING";
             cmd = new NpgsqlCommand(athleteParticipates);
             cmd.Connection = npgSqlCon;
             cmd.ExecuteNonQuery();
