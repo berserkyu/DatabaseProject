@@ -23,6 +23,7 @@ namespace DatabaseProject
         int score, D, P;
         int finalScore;
         int i = 0;
+        private bool curGame = true;
         public MainJudgeForm()
         {
             InitializeComponent();
@@ -66,14 +67,14 @@ namespace DatabaseProject
             cmd.Connection = npgSqlCon1;
             readerAthleteInfo = cmd.ExecuteReader();
             */
+            i = 0;
             gamesToReview = new List<string>();
-            string gamesToReviewQuery = "SELECT gameId FROM games";
+            string gamesToReviewQuery = "SELECT gameId FROM games WHERE stage="+!curGame;
             NpgsqlCommand cmd = new NpgsqlCommand(gamesToReviewQuery);
             cmd.Connection = npgSqlCon;
             reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                System.Diagnostics.Debug.WriteLine(reader.GetValue(0).ToString());
                 gamesToReview.Add(reader.GetValue(0).ToString());
             }
             reader.Close();
@@ -117,6 +118,11 @@ namespace DatabaseProject
             renewFinalScoreBoard();
             //move on
             i++;
+            if (i >= gamesToReview.Count)
+            {
+                pass_Button.Enabled = false;
+                not_pass_button.Enabled = false;
+            }
             renewScoreBoard();
         }
 
@@ -148,6 +154,12 @@ namespace DatabaseProject
         private void button2_Click(object sender, EventArgs e)
         {
             //refresh
+            if(curGame != isFinal.Checked)
+            {
+                
+                curGame = isFinal.Checked;
+                init();
+            }
             renewScoreBoard();
         }
 
@@ -258,8 +270,10 @@ namespace DatabaseProject
         {
             if(i>= gamesToReview.Count)
             {
+                curGame = false;
                 button1.Enabled = false;
                 gameLabel.Text = "已完成所有评估";
+                mainFormRef.generateFinals();
                 return;
             }
             string curGameId = gamesToReview[i];

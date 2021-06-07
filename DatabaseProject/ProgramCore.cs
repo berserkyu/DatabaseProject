@@ -41,4 +41,7 @@ public class ProgramCore
             default: return "0";
         }
     }
+
+    //generate finals info
+   
 }

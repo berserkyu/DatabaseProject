@@ -27,10 +27,16 @@ namespace DatabaseProject
         private void finalsInformation_Load(object sender, EventArgs e)
         {
             //得出决赛赛程
-            string query = "SELECT gameType,gender,ageGroup,time" +
+            refresh_Click(this, EventArgs.Empty);
+        }
+
+        private void refresh_Click(object sender, EventArgs e)
+        {
+            //赛程
+            string query = "SELECT gameType,gender,ageGroup,time,gameId" +
                             " FROM games,competitions" +
                             " WHERE games.compId = competitions.compId" +
-                            " AND games.stage = false";
+                            " AND games.stage ="+!showFinals.Checked;
             NpgsqlCommand cmd = new NpgsqlCommand(query);
             cmd.Connection = npgSqlCon;
             NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -41,15 +47,17 @@ namespace DatabaseProject
                 dt.Columns.Add("性别", typeof(string));
                 dt.Columns.Add("年龄组", typeof(string));
                 dt.Columns.Add("场次", typeof(int));
+                dt.Columns.Add("x", typeof(string));
                 while (reader.Read())
                 {
                     DataRow row = dt.NewRow();
-                    object[] objs = new object[4];
+                    object[] objs = new object[5];
                     reader.GetValues(objs);
                     row["项目"] = objs[0]?.ToString();
                     row["性别"] = (objs[1]?.ToString() == "true" ? "男" : "女");
                     row["年龄组"] = ProgramCore.ageRange(objs[2]?.ToString());
                     row["场次"] = objs[3].ToString();
+                    row["x"] = objs[4].ToString();
                     dt.Rows.Add(row);
                 }
                 reader.Close();
@@ -57,19 +65,19 @@ namespace DatabaseProject
             }
             reader.Close();
             //得出决赛运动员参赛信息
-            query = "SELECT athlete.name,teams.teamName gameType, competitions.gender,ageGroup,time"+
-                    " FROM athlete,teams,participates,games,competitions"+
-                    " WHERE athlete.athleteNo = participates.athleteNo"+
-                    " AND athlete.teamAccNo = teams.accNo"+
-                    " AND participates.tournamentId = games.gameId"+
-                    " AND games.compId = competitions.compId"+
-                    " AND games.stage = false"+
-                    " ORDER BY time ASC,"+
+            query = "SELECT athlete.name,teams.teamName, gameType, competitions.gender,ageGroup,time,gameId" +
+                    " FROM athlete,teams,participates,games,competitions" +
+                    " WHERE athlete.athleteNo = participates.athleteNo" +
+                    " AND athlete.teamAccNo = teams.accNo" +
+                    " AND participates.tournamentId = games.gameId" +
+                    " AND games.compId = competitions.compId" +
+                    " AND games.stage ="+!showFinals.Checked +
+                    " ORDER BY time ASC," +
                     " teamName DESC";
             cmd = new NpgsqlCommand(query);
             cmd.Connection = npgSqlCon;
             reader = cmd.ExecuteReader();
-            
+
             if (reader.HasRows)
             {
                 DataTable dt = new DataTable();
@@ -79,25 +87,28 @@ namespace DatabaseProject
                 dt.Columns.Add("性别", typeof(string));
                 dt.Columns.Add("年龄组", typeof(string));
                 dt.Columns.Add("场次", typeof(string));
+                dt.Columns.Add("x", typeof(string));
                 while (reader.Read())
                 {
                     DataRow row = dt.NewRow();
-                    object[] objs = new object[6];
+                    object[] objs = new object[7];
                     reader.GetValues(objs);
                     row["姓名"] = objs[0]?.ToString();
                     row["队伍"] = objs[1]?.ToString();
                     row["项目"] = objs[2]?.ToString();
-                    row["性别"] = (objs[3]?.ToString()=="true"?"男":"女");
+                    row["性别"] = (objs[3]?.ToString() == "true" ? "男" : "女");
                     row["年龄组"] = ProgramCore.ageRange(objs[4]?.ToString());
                     row["场次"] = objs[5]?.ToString();
+                    row["x"] = objs[6]?.ToString();
                     dt.Rows.Add(row);
                 }
                 finalsParticipation.DataSource = dt;
             }
             else
             {
-                noticeLab.Text = "决赛参赛信息暂未公布";
+                noticeLab.Text = "比赛信息暂未公布";
             }
+            reader.Close();
         }
     }
 }

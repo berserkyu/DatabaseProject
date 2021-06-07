@@ -64,13 +64,13 @@ namespace DatabaseProject
             this.gameTypeUpDown = new System.Windows.Forms.DomainUpDown();
             this.npgsqlCommand2 = new Npgsql.NpgsqlCommand();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.judgesInfoGrid = new System.Windows.Forms.DataGridView();
-            this.addJudgeToGame = new System.Windows.Forms.Button();
-            this.judgeAccNo = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
+            this.noticeLabelAddJudge = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.gameToJudge = new System.Windows.Forms.TextBox();
-            this.noticeLabelAddJudge = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.judgeAccNo = new System.Windows.Forms.TextBox();
+            this.addJudgeToGame = new System.Windows.Forms.Button();
+            this.judgesInfoGrid = new System.Windows.Forms.DataGridView();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.accInfoGridView)).BeginInit();
             this.delFromSchedule.SuspendLayout();
@@ -93,7 +93,7 @@ namespace DatabaseProject
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(943, 324);
+            this.button1.Location = new System.Drawing.Point(1431, 749);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(135, 65);
             this.button1.TabIndex = 1;
@@ -122,9 +122,9 @@ namespace DatabaseProject
             this.groupBox1.Controls.Add(this.accNo);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(20, 82);
+            this.groupBox1.Location = new System.Drawing.Point(12, 521);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(917, 307);
+            this.groupBox1.Size = new System.Drawing.Size(856, 307);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "账号管理";
@@ -146,9 +146,9 @@ namespace DatabaseProject
             this.noticeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.noticeLabel.Location = new System.Drawing.Point(27, 188);
             this.noticeLabel.Name = "noticeLabel";
-            this.noticeLabel.Size = new System.Drawing.Size(78, 29);
+            this.noticeLabel.Size = new System.Drawing.Size(19, 29);
             this.noticeLabel.TabIndex = 12;
-            this.noticeLabel.Text = "notice";
+            this.noticeLabel.Text = ".";
             // 
             // accInfoGridView
             // 
@@ -161,7 +161,7 @@ namespace DatabaseProject
             this.accInfoGridView.ReadOnly = true;
             this.accInfoGridView.RowHeadersWidth = 51;
             this.accInfoGridView.RowTemplate.Height = 24;
-            this.accInfoGridView.Size = new System.Drawing.Size(458, 257);
+            this.accInfoGridView.Size = new System.Drawing.Size(397, 257);
             this.accInfoGridView.TabIndex = 5;
             // 
             // refreshAccInfo
@@ -277,9 +277,9 @@ namespace DatabaseProject
             this.delFromSchedule.Controls.Add(this.genderUpDown);
             this.delFromSchedule.Controls.Add(this.gameTypeUpDown);
             this.delFromSchedule.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.delFromSchedule.Location = new System.Drawing.Point(20, 406);
+            this.delFromSchedule.Location = new System.Drawing.Point(12, 84);
             this.delFromSchedule.Name = "delFromSchedule";
-            this.delFromSchedule.Size = new System.Drawing.Size(1058, 431);
+            this.delFromSchedule.Size = new System.Drawing.Size(942, 431);
             this.delFromSchedule.TabIndex = 5;
             this.delFromSchedule.TabStop = false;
             this.delFromSchedule.Text = "赛程安排";
@@ -288,18 +288,18 @@ namespace DatabaseProject
             // 
             this.noticeLabelSchedule.AutoSize = true;
             this.noticeLabelSchedule.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.noticeLabelSchedule.Location = new System.Drawing.Point(291, 205);
+            this.noticeLabelSchedule.Location = new System.Drawing.Point(15, 314);
             this.noticeLabelSchedule.Name = "noticeLabelSchedule";
-            this.noticeLabelSchedule.Size = new System.Drawing.Size(78, 29);
+            this.noticeLabelSchedule.Size = new System.Drawing.Size(19, 29);
             this.noticeLabelSchedule.TabIndex = 21;
-            this.noticeLabelSchedule.Text = "notice";
+            this.noticeLabelSchedule.Text = ".";
             // 
             // delSchedule
             // 
             this.delSchedule.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.delSchedule.Location = new System.Drawing.Point(227, 381);
+            this.delSchedule.Location = new System.Drawing.Point(157, 381);
             this.delSchedule.Name = "delSchedule";
-            this.delSchedule.Size = new System.Drawing.Size(201, 34);
+            this.delSchedule.Size = new System.Drawing.Size(127, 34);
             this.delSchedule.TabIndex = 20;
             this.delSchedule.Text = "移除该场次比赛";
             this.delSchedule.UseVisualStyleBackColor = true;
@@ -309,16 +309,16 @@ namespace DatabaseProject
             // 
             this.noticeLabel1.AutoSize = true;
             this.noticeLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.noticeLabel1.Location = new System.Drawing.Point(641, 386);
+            this.noticeLabel1.Location = new System.Drawing.Point(299, 386);
             this.noticeLabel1.Name = "noticeLabel1";
-            this.noticeLabel1.Size = new System.Drawing.Size(78, 29);
+            this.noticeLabel1.Size = new System.Drawing.Size(19, 29);
             this.noticeLabel1.TabIndex = 14;
-            this.noticeLabel1.Text = "notice";
+            this.noticeLabel1.Text = ".";
             // 
             // refreshSchedule
             // 
             this.refreshSchedule.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.refreshSchedule.Location = new System.Drawing.Point(432, 312);
+            this.refreshSchedule.Location = new System.Drawing.Point(297, 312);
             this.refreshSchedule.Name = "refreshSchedule";
             this.refreshSchedule.Size = new System.Drawing.Size(201, 34);
             this.refreshSchedule.TabIndex = 18;
@@ -332,7 +332,7 @@ namespace DatabaseProject
             this.scheduleGridView.AllowUserToDeleteRows = false;
             this.scheduleGridView.AllowUserToOrderColumns = true;
             this.scheduleGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.scheduleGridView.Location = new System.Drawing.Point(432, 33);
+            this.scheduleGridView.Location = new System.Drawing.Point(297, 33);
             this.scheduleGridView.Name = "scheduleGridView";
             this.scheduleGridView.ReadOnly = true;
             this.scheduleGridView.RowHeadersWidth = 51;
@@ -345,7 +345,7 @@ namespace DatabaseProject
             this.addToSchedule.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.addToSchedule.Location = new System.Drawing.Point(20, 381);
             this.addToSchedule.Name = "addToSchedule";
-            this.addToSchedule.Size = new System.Drawing.Size(201, 34);
+            this.addToSchedule.Size = new System.Drawing.Size(131, 34);
             this.addToSchedule.TabIndex = 6;
             this.addToSchedule.Text = "添加场次";
             this.addToSchedule.UseVisualStyleBackColor = true;
@@ -470,49 +470,22 @@ namespace DatabaseProject
             this.groupBox2.Controls.Add(this.addJudgeToGame);
             this.groupBox2.Controls.Add(this.judgesInfoGrid);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(1084, 406);
+            this.groupBox2.Location = new System.Drawing.Point(960, 84);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(566, 431);
+            this.groupBox2.Size = new System.Drawing.Size(694, 431);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "安排裁判";
             // 
-            // judgesInfoGrid
+            // noticeLabelAddJudge
             // 
-            this.judgesInfoGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.judgesInfoGrid.Location = new System.Drawing.Point(301, 36);
-            this.judgesInfoGrid.Name = "judgesInfoGrid";
-            this.judgesInfoGrid.RowHeadersWidth = 51;
-            this.judgesInfoGrid.RowTemplate.Height = 24;
-            this.judgesInfoGrid.Size = new System.Drawing.Size(240, 365);
-            this.judgesInfoGrid.TabIndex = 0;
-            // 
-            // addJudgeToGame
-            // 
-            this.addJudgeToGame.Location = new System.Drawing.Point(20, 309);
-            this.addJudgeToGame.Name = "addJudgeToGame";
-            this.addJudgeToGame.Size = new System.Drawing.Size(147, 72);
-            this.addJudgeToGame.TabIndex = 1;
-            this.addJudgeToGame.Text = "添加";
-            this.addJudgeToGame.UseVisualStyleBackColor = true;
-            this.addJudgeToGame.Click += new System.EventHandler(this.addJudgeToGame_Click);
-            // 
-            // judgeAccNo
-            // 
-            this.judgeAccNo.Location = new System.Drawing.Point(7, 94);
-            this.judgeAccNo.Name = "judgeAccNo";
-            this.judgeAccNo.Size = new System.Drawing.Size(275, 30);
-            this.judgeAccNo.TabIndex = 2;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(6, 62);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(109, 29);
-            this.label9.TabIndex = 22;
-            this.label9.Text = "裁判账号";
+            this.noticeLabelAddJudge.AutoSize = true;
+            this.noticeLabelAddJudge.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.noticeLabelAddJudge.Location = new System.Drawing.Point(6, 219);
+            this.noticeLabelAddJudge.Name = "noticeLabelAddJudge";
+            this.noticeLabelAddJudge.Size = new System.Drawing.Size(19, 29);
+            this.noticeLabelAddJudge.TabIndex = 22;
+            this.noticeLabelAddJudge.Text = ".";
             // 
             // label10
             // 
@@ -531,20 +504,48 @@ namespace DatabaseProject
             this.gameToJudge.Size = new System.Drawing.Size(275, 30);
             this.gameToJudge.TabIndex = 23;
             // 
-            // noticeLabelAddJudge
+            // label9
             // 
-            this.noticeLabelAddJudge.AutoSize = true;
-            this.noticeLabelAddJudge.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.noticeLabelAddJudge.Location = new System.Drawing.Point(6, 219);
-            this.noticeLabelAddJudge.Name = "noticeLabelAddJudge";
-            this.noticeLabelAddJudge.Size = new System.Drawing.Size(78, 29);
-            this.noticeLabelAddJudge.TabIndex = 22;
-            this.noticeLabelAddJudge.Text = "notice";
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(6, 62);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(109, 29);
+            this.label9.TabIndex = 22;
+            this.label9.Text = "裁判账号";
+            // 
+            // judgeAccNo
+            // 
+            this.judgeAccNo.Location = new System.Drawing.Point(7, 94);
+            this.judgeAccNo.Name = "judgeAccNo";
+            this.judgeAccNo.Size = new System.Drawing.Size(275, 30);
+            this.judgeAccNo.TabIndex = 2;
+            // 
+            // addJudgeToGame
+            // 
+            this.addJudgeToGame.Location = new System.Drawing.Point(20, 309);
+            this.addJudgeToGame.Name = "addJudgeToGame";
+            this.addJudgeToGame.Size = new System.Drawing.Size(147, 72);
+            this.addJudgeToGame.TabIndex = 1;
+            this.addJudgeToGame.Text = "添加";
+            this.addJudgeToGame.UseVisualStyleBackColor = true;
+            this.addJudgeToGame.Click += new System.EventHandler(this.addJudgeToGame_Click);
+            // 
+            // judgesInfoGrid
+            // 
+            this.judgesInfoGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.judgesInfoGrid.Location = new System.Drawing.Point(301, 36);
+            this.judgesInfoGrid.Name = "judgesInfoGrid";
+            this.judgesInfoGrid.RowHeadersWidth = 51;
+            this.judgesInfoGrid.RowTemplate.Height = 24;
+            this.judgesInfoGrid.Size = new System.Drawing.Size(369, 365);
+            this.judgesInfoGrid.TabIndex = 0;
             // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1692, 865);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.delFromSchedule);

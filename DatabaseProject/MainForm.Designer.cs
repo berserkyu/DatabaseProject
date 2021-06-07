@@ -50,8 +50,8 @@ namespace DatabaseProject
             this.noticeLabel = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.getFinalsSchedule = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.globalNoticeLabel = new System.Windows.Forms.Label();
+            this.showsFinals = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.personalRank)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.teamOverallRank)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.teamGamesRank)).BeginInit();
@@ -137,10 +137,10 @@ namespace DatabaseProject
             // 
             // tempButton
             // 
-            this.tempButton.Location = new System.Drawing.Point(871, 581);
+            this.tempButton.Location = new System.Drawing.Point(815, 581);
             this.tempButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tempButton.Name = "tempButton";
-            this.tempButton.Size = new System.Drawing.Size(272, 53);
+            this.tempButton.Size = new System.Drawing.Size(141, 53);
             this.tempButton.TabIndex = 12;
             this.tempButton.Text = "刷新";
             this.tempButton.UseVisualStyleBackColor = true;
@@ -260,9 +260,9 @@ namespace DatabaseProject
             this.noticeLab.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.noticeLab.Location = new System.Drawing.Point(27, 284);
             this.noticeLab.Name = "noticeLab";
-            this.noticeLab.Size = new System.Drawing.Size(75, 36);
+            this.noticeLab.Size = new System.Drawing.Size(23, 36);
             this.noticeLab.TabIndex = 19;
-            this.noticeLab.Text = "账号";
+            this.noticeLab.Text = ".";
             // 
             // noticeLabel
             // 
@@ -275,6 +275,7 @@ namespace DatabaseProject
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.showsFinals);
             this.groupBox2.Controls.Add(this.tempButton);
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Controls.Add(this.teamOverallRank);
@@ -300,21 +301,9 @@ namespace DatabaseProject
             this.getFinalsSchedule.Name = "getFinalsSchedule";
             this.getFinalsSchedule.Size = new System.Drawing.Size(140, 53);
             this.getFinalsSchedule.TabIndex = 19;
-            this.getFinalsSchedule.Text = "获取决赛赛程";
+            this.getFinalsSchedule.Text = "赛程页面";
             this.getFinalsSchedule.UseVisualStyleBackColor = true;
             this.getFinalsSchedule.Click += new System.EventHandler(this.getFinalsSchedule_Click);
-            // 
-            // button2
-            // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(225, 420);
-            this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(153, 53);
-            this.button2.TabIndex = 20;
-            this.button2.Text = "生成决赛赛程";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // globalNoticeLabel
             // 
@@ -323,20 +312,31 @@ namespace DatabaseProject
             this.globalNoticeLabel.Name = "globalNoticeLabel";
             this.globalNoticeLabel.Size = new System.Drawing.Size(366, 189);
             this.globalNoticeLabel.TabIndex = 20;
-            this.globalNoticeLabel.Text = "账号";
+            this.globalNoticeLabel.Text = ".";
+            // 
+            // showsFinals
+            // 
+            this.showsFinals.AutoSize = true;
+            this.showsFinals.Location = new System.Drawing.Point(962, 589);
+            this.showsFinals.Name = "showsFinals";
+            this.showsFinals.Size = new System.Drawing.Size(157, 40);
+            this.showsFinals.TabIndex = 18;
+            this.showsFinals.Text = "显示决赛";
+            this.showsFinals.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1360, 704);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(1682, 721);
             this.Controls.Add(this.globalNoticeLabel);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.getFinalsSchedule);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MaximumSize = new System.Drawing.Size(1800, 768);
             this.Name = "MainForm";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.personalRank)).EndInit();
@@ -373,9 +373,9 @@ namespace DatabaseProject
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label noticeLabel;
         private System.Windows.Forms.Button getFinalsSchedule;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label noticeLab;
         private System.Windows.Forms.Label globalNoticeLabel;
+        private System.Windows.Forms.CheckBox showsFinals;
     }
 }
 

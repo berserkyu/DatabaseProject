@@ -27,11 +27,16 @@ namespace DatabaseProject
         }
         public MainForm()
         {
+            this.Width = 2000;
             InitializeComponent();
             string connStr = String.Format("server={0};Port={1};User Id={2};Password={3};Database={4}",
                              "localhost", "5432", "postgres", "JunYu1110@", "sport_competition");
             npgSqlCon = new NpgsqlConnection(connStr);
             npgSqlCon.Open();
+            NpgsqlConnection npgSqlCon1 = new NpgsqlConnection(connStr);
+            npgSqlCon1.Open();
+           
+
         }
         public void setNotice(string notice)
         {
@@ -43,12 +48,15 @@ namespace DatabaseProject
             // get rank from participates
             //personal overall rank
             string query = " WITH t AS(SELECT athleteNo, avg(finalScore) as score" +
-                                    " FROM participates" +
+                                    " FROM participates,games" +
+                                    " WHERE tournamentId=gameId" +
+                                    "   AND stage="+!showsFinals.Checked +
                                     " GROUP BY athleteNo)" +
-                            " SELECT t.athleteNo,athlete.name,teamName,t.score" +
-                            "  FROM t,athlete,teams" +
+                            " SELECT athlete.name,teamName,t.score" +
+                            "  FROM t,athlete,teams,games" +
                             " WHERE t.athleteNo = athlete.athleteNo" +
-                            " AND athlete.identityNo = teams.memberIdentityNo";
+                            " AND athlete.identityNo = teams.memberIdentityNo" +
+                            " ";
             NpgsqlCommand cmd = new NpgsqlCommand(query);
             cmd.Connection = npgSqlCon;
             reader = cmd.ExecuteReader();
@@ -81,7 +89,8 @@ namespace DatabaseProject
                                     " FROM teams, athlete, participates, games"+
                                     " WHERE teams.memberIdentityNo= athlete.identityNo"+
                                     " AND athlete.athleteNo= participates.athleteNo"+
-                                    " AND participates.tournamentId= games.gameId"+
+                                    " AND participates.tournamentId= games.gameId" +
+                                    " AND games.stage="+!showsFinals.Checked+
                                     " GROUP BY teamAccNo, gameId),"+
 	                            " tName AS(SELECT accNo, teamName FROM teams GROUP BY accNo, teamName)"+
                             " SELECT teamName, gameType, gender, ageGroup, teamTotalScore"+
@@ -119,9 +128,11 @@ namespace DatabaseProject
             reader.Close();
             //team overall rank
             string query1 = " SELECT teamName,sum(finalScore) as s,teamAccNo" +
-                            " FROM teams, athlete, participates" +
+                            " FROM teams, athlete, participates,games" +
                             " WHERE teams.memberIdentityNo = athlete.identityNo" +
                             " AND athlete.athleteNo = participates.athleteNo" +
+                            " AND tournamentId=gameId" +
+                            " AND games.stage="+!showsFinals.Checked +
                             " GROUP BY teamAccNo,teamName" +
                             " ORDER BY s DESC";
             NpgsqlCommand cmd1 = new NpgsqlCommand(query1);
@@ -224,8 +235,10 @@ MessageBoxButtons.OK);
             finalsInformation finalForm = new finalsInformation();
             finalForm.Show();
         }
+        //generate finals info
+        private void button2_Click(object sender, EventArgs e){}
 
-        private void button2_Click(object sender, EventArgs e)
+        public void generateFinals()
         {
             //generate games schedule entirely same as pre game
             string insertGames = "INSERT INTO games(compId,stage,time)" +
@@ -234,25 +247,40 @@ MessageBoxButtons.OK);
             NpgsqlCommand cmd = new NpgsqlCommand(insertGames);
             cmd.Connection = npgSqlCon;
             cmd.ExecuteNonQuery();
-            //generate athletes participation same as pre game
+            //generate athletes participation of top 4 teams same as pre game
             string athleteParticipates = "INSERT INTO participates(tournamentId, athleteNo, finalScore)"+
-                                        "WITH finals AS(SELECT * FROM games WHERE stage = false)"+
-                                        "SELECT finals.gameId,athleteNo,0"+
-                                        "FROM participates, games, finals"+
-                                        "WHERE games.stage = true"+
-                                        "AND games.compId = finals.compId"+
-                                        "AND participates.tournamentId = games.gameId";
+                                        " WITH athletesAdvanced as ("+
+                                                    " WITH top4teams AS(SELECT sum(finalScore) as s, teamAccNo"+
+                                                                    " FROM teams, athlete, participates, games"+
+                                                                    " WHERE teams.memberIdentityNo = athlete.identityNo"+
+                                                                    " AND athlete.athleteNo = participates.athleteNo"+
+                                                                    " AND tournamentId = gameId"+
+                                                                    " AND games.stage = true"+
+                                                                    " GROUP BY teamAccNo"+
+                                                                    " ORDER BY s DESC LIMIT 4)"+
+                                                    " SELECT athleteNo, top4teams.teamAccNo"+
+                                                    " FROM athlete,top4teams"+
+                                                    " WHERE athlete.teamAccNo = top4teams.teamAccNo),"+
+                                        " finals AS(SELECT* FROM games WHERE stage = false)"+
+                                        " SELECT finals.gameId,participates.athleteNo,0"+
+                                        " FROM athletesAdvanced, participates, games, finals, competitions"+
+                                        " WHERE games.stage = true"+
+                                        " AND games.compId = finals.compId"+
+                                        " AND competitions.compId = games.compId"+
+                                        " AND participates.tournamentId = games.gameId"+
+                                        " AND athletesAdvanced.athleteNo = participates.athleteNo";
             cmd = new NpgsqlCommand(athleteParticipates);
             cmd.Connection = npgSqlCon;
             cmd.ExecuteNonQuery();
             //assigne same judges as pre game
-            string assignJudges = "INSERT INTO judges(gameId, judgeNo)"+
-                                    " WITH finals AS(SELECT * FROM games WHERE stage = false)"+
-                                    " SELECT finals.gameId,judgeNo"+
-                                    " FROM judges,games,finals"+
-                                    " WHERE games.stage = true"+
-                                    " AND games.compId = finals.compId"+
-                                    " AND judges.gameId = games.gameId";
+            string assignJudges = "INSERT INTO judges(gameId, judgeNo)" +
+                                    " WITH finals AS(SELECT * FROM games WHERE stage = false)" +
+                                    " SELECT finals.gameId,judgeNo" +
+                                    " FROM judges,games,finals" +
+                                    " WHERE games.stage = true" +
+                                    " AND games.compId = finals.compId" +
+                                    " AND judges.gameId = games.gameId" +
+                                    " ON CONFLICT DO NOTHING";
             cmd = new NpgsqlCommand(assignJudges);
             cmd.Connection = npgSqlCon;
             cmd.ExecuteNonQuery();

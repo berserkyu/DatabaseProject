@@ -21,6 +21,7 @@ namespace DatabaseProject
         private List<string> gamesAssigned;
         int i = 0;
         int score;
+        bool curGame = false;
         public JudgeForm()
         {
             InitializeComponent();
@@ -28,7 +29,7 @@ namespace DatabaseProject
         public JudgeForm(MainForm mainForm,string accNo)
         {
             judgeAccNo = accNo;
-            gamesAssigned = new List<string>();
+            
             this.ControlBox = false;
             mainFormRef = mainForm as MainForm;
             InitializeComponent();
@@ -124,6 +125,16 @@ namespace DatabaseProject
             else readerAthleteInfo.Close();
             */
         }
+
+        private void refresh_Click(object sender, EventArgs e)
+        {
+            if (curGame != isFinal.Checked)
+            {
+                curGame = isFinal.Checked;
+                init();
+            }
+        }
+
         private void renewScoreBoard()
         {
             System.Diagnostics.Debug.WriteLine("renew score board");
@@ -181,8 +192,11 @@ namespace DatabaseProject
         }
         private void init()
         {
-            string gameIdQuery = String.Format("SELECT gameId FROM judges" +
-                                               " WHERE judgeNo='{0}'",judgeAccNo);
+            gamesAssigned = new List<string>();
+            string gameIdQuery = String.Format("SELECT gameId FROM judges,games" +
+                                               " WHERE judgeNo='{0}'" +
+                                               " AND judges.gameId=games.gameId" +
+                                               " AND games.stage={1}",judgeAccNo,curGame);
             NpgsqlCommand cmd = new NpgsqlCommand(gameIdQuery);
             cmd.Connection = npgSqlCon1;
             

@@ -331,9 +331,9 @@ namespace DatabaseProject
             this.noticeLabelNonAthlete.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.noticeLabelNonAthlete.Location = new System.Drawing.Point(154, 302);
             this.noticeLabelNonAthlete.Name = "noticeLabelNonAthlete";
-            this.noticeLabelNonAthlete.Size = new System.Drawing.Size(21, 24);
+            this.noticeLabelNonAthlete.Size = new System.Drawing.Size(15, 24);
             this.noticeLabelNonAthlete.TabIndex = 53;
-            this.noticeLabelNonAthlete.Text = "n";
+            this.noticeLabelNonAthlete.Text = ".";
             // 
             // addNonAthleteInfo
             // 
@@ -406,9 +406,9 @@ namespace DatabaseProject
             this.noticeLabelAthlete.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.noticeLabelAthlete.Location = new System.Drawing.Point(14, 206);
             this.noticeLabelAthlete.Name = "noticeLabelAthlete";
-            this.noticeLabelAthlete.Size = new System.Drawing.Size(21, 24);
+            this.noticeLabelAthlete.Size = new System.Drawing.Size(15, 24);
             this.noticeLabelAthlete.TabIndex = 54;
-            this.noticeLabelAthlete.Text = "n";
+            this.noticeLabelAthlete.Text = ".";
             // 
             // groupBox3
             // 
@@ -435,9 +435,9 @@ namespace DatabaseProject
             this.noticeLabelParticipate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.noticeLabelParticipate.Location = new System.Drawing.Point(17, 243);
             this.noticeLabelParticipate.Name = "noticeLabelParticipate";
-            this.noticeLabelParticipate.Size = new System.Drawing.Size(21, 24);
+            this.noticeLabelParticipate.Size = new System.Drawing.Size(15, 24);
             this.noticeLabelParticipate.TabIndex = 54;
-            this.noticeLabelParticipate.Text = "n";
+            this.noticeLabelParticipate.Text = ".";
             // 
             // participatesInfoGrid
             // 

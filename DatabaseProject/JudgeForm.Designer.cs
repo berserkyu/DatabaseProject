@@ -34,6 +34,8 @@ namespace DatabaseProject
             this.button1 = new System.Windows.Forms.Button();
             this.scoreBoard = new System.Windows.Forms.DataGridView();
             this.curGameLabel = new System.Windows.Forms.Label();
+            this.refresh = new System.Windows.Forms.Button();
+            this.isFinal = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.scoreBoard)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,9 +52,9 @@ namespace DatabaseProject
             // logOut
             // 
             this.logOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.logOut.Location = new System.Drawing.Point(271, 12);
+            this.logOut.Location = new System.Drawing.Point(271, 547);
             this.logOut.Name = "logOut";
-            this.logOut.Size = new System.Drawing.Size(84, 38);
+            this.logOut.Size = new System.Drawing.Size(84, 49);
             this.logOut.TabIndex = 1;
             this.logOut.Text = "登出";
             this.logOut.UseVisualStyleBackColor = true;
@@ -85,15 +87,38 @@ namespace DatabaseProject
             this.curGameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.curGameLabel.Location = new System.Drawing.Point(15, 69);
             this.curGameLabel.Name = "curGameLabel";
-            this.curGameLabel.Size = new System.Drawing.Size(53, 20);
+            this.curGameLabel.Size = new System.Drawing.Size(13, 20);
             this.curGameLabel.TabIndex = 28;
-            this.curGameLabel.Text = "label4";
+            this.curGameLabel.Text = ".";
+            // 
+            // refresh
+            // 
+            this.refresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.refresh.Location = new System.Drawing.Point(19, 509);
+            this.refresh.Name = "refresh";
+            this.refresh.Size = new System.Drawing.Size(167, 49);
+            this.refresh.TabIndex = 29;
+            this.refresh.Text = "刷新";
+            this.refresh.UseVisualStyleBackColor = true;
+            this.refresh.Click += new System.EventHandler(this.refresh_Click);
+            // 
+            // isFinal
+            // 
+            this.isFinal.AutoSize = true;
+            this.isFinal.Location = new System.Drawing.Point(19, 565);
+            this.isFinal.Name = "isFinal";
+            this.isFinal.Size = new System.Drawing.Size(58, 21);
+            this.isFinal.TabIndex = 30;
+            this.isFinal.Text = "决赛";
+            this.isFinal.UseVisualStyleBackColor = true;
             // 
             // JudgeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(390, 522);
+            this.ClientSize = new System.Drawing.Size(390, 608);
+            this.Controls.Add(this.isFinal);
+            this.Controls.Add(this.refresh);
             this.Controls.Add(this.curGameLabel);
             this.Controls.Add(this.scoreBoard);
             this.Controls.Add(this.button1);
@@ -114,5 +139,7 @@ namespace DatabaseProject
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridView scoreBoard;
         private System.Windows.Forms.Label curGameLabel;
+        private System.Windows.Forms.Button refresh;
+        private System.Windows.Forms.CheckBox isFinal;
     }
 }
